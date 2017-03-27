@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+vendor/bin/phpunit -c test --testsuite "Paysera Test Suite" --stop-on-failure $@ || exit 1
+
+exit 0

@@ -1,0 +1,21 @@
+{
+    "name": "akvara/paysera",
+    "require": {
+        "symfony/console": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Paysera\\": "src"
+        }
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^3.2",
+        "phpunit/phpunit": "^6.0"
+    },
+    "authors": [
+        {
+            "name": "Andrius K.",
+            "email": "akvara@gmail.com"
+        }
+    ]
+}
