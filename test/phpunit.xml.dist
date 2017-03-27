@@ -2,7 +2,7 @@
 
 <phpunit bootstrap="../vendor/autoload.php" colors="true">
     <testsuites>
-        <testsuite name="Paysera Test Suite">
+        <testsuite name="Paysera App Test Suite">
             <directory>../test</directory>
         </testsuite>
     </testsuites>
