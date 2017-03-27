@@ -1,0 +1,5 @@
+suites:
+   paysera_suite:
+       namespace:  Paysera
+       psr4_prefix:  Paysera
+       src_path:  src/Paysera

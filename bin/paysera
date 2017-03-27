@@ -1,13 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-use Paysera\ImportCommand;
+use Paysera\CalcCommand;
+use Paysera\CheckCommand;
 use Symfony\Component\Console\Application;
 
 require __DIR__.'/../vendor/autoload.php';
 
 $app = new Application('Paysera app', "1.0.1");
 
-$app->add(new ImportCommand());
+$app->add(new CheckCommand());
+$app->add(new CalcCommand());
 
 $app->run();

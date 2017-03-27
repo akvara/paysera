@@ -5,12 +5,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Paysera\\": "src"
+            "Paysera\\": "src/Paysera"
         }
     },
     "require-dev": {
         "phpspec/phpspec": "^3.2",
-        "phpunit/phpunit": "^6.0"
+        "phpunit/phpunit": "^6.0",
+        "mikey179/vfsStream": "*"
     },
     "authors": [
         {

@@ -7,7 +7,7 @@
 
 namespace Tests;
 
-use Paysera\ImportCommand;
+use Paysera\CalcCommand;
 use PHPUnit\Framework\TestCase as TestCase;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -19,14 +19,14 @@ class MakeCommandTest extends TestCase
     */
     public function it_throws_exception_if_argument_is_not_supplied()
     {
-        $tester = new CommandTester(new ImportCommand());
+        $tester = new CommandTester(new CalcCommand());
         $tester->execute([]);
     }
 
     /** @test */
     public function it_displays_a_success_message_if_argument_is_supplied()
     {
-        $tester = new CommandTester(new ImportCommand());
+        $tester = new CommandTester(new CalcCommand());
         $tester->execute([
             'file' => 'file'
         ]);
