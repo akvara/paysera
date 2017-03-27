@@ -34,7 +34,7 @@ final class Config
     /** Config format is: AAA,123.456 */
     const CONFIG_FORMAT = ['String', 'Numeric'];
 
-    /** User data format is:  */
+    /** User data format is: 2016-01-05,1,natural,cash_in,200.00,EUR */
     const USER_DATA_FORMAT = ['Date', 'Numeric', 'String', 'String', 'Numeric', 'String'];
 
     /** Date format is: Y-m-d */

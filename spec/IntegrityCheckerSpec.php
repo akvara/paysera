@@ -31,15 +31,20 @@ class IntegrityCheckerSpec extends ObjectBehavior
 
     function it_passes_correct_config_file()
     {
-        $config_file_content = "ABC,123";
+        $config_file_content = "COMPULSORY,123";
 
         vfsStream::newFile($this->fileName)->at($this->root)->withContent($config_file_content);
 
-        $configs = [$this->mockedFileName => ['format' => Config::CONFIG_FORMAT]];
+        $configs = [
+            $this->mockedFileName => [
+                'format' => Config::CONFIG_FORMAT,
+                'keys' => ['COMPULSORY']
+            ]
+        ];
 
         $this->beConstructedWith($configs);
 
-        $this->check()->shouldReturn(true);
+        $this->checkConfig()->shouldReturn(true);
     }
 
     function it_throws_exception_on_wrong_config_file_column_count()
@@ -62,7 +67,7 @@ class IntegrityCheckerSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new \Exception($expectedException))
-            ->during('check');
+            ->during('checkConfig');
     }
 
     function it_throws_exception_on_incorrect_config_file_format()
@@ -72,9 +77,10 @@ class IntegrityCheckerSpec extends ObjectBehavior
         vfsStream::newFile($this->fileName)->at($this->root)->withContent($config_file_content);
 
         $expectedException = sprintf(
-            "Unexpected type of column, file %s, line %d: expected Number",
+            "Unexpected type of column, file %s, line %d, column %d: expected Number",
             $this->mockedFileName,
-            1
+            1,
+            2
         );
 
         $configs = [$this->mockedFileName => ['format' => Config::CONFIG_FORMAT]];
@@ -83,7 +89,7 @@ class IntegrityCheckerSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new \Exception($expectedException))
-            ->during('check');
+            ->during('checkConfig');
     }
 
     function it_throws_exception_on_missing_config_keys()
@@ -109,6 +115,6 @@ class IntegrityCheckerSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new \Exception($expectedException))
-            ->during('check');
+            ->during('checkConfig');
     }
 }

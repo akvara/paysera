@@ -2,6 +2,7 @@
 
 namespace Paysera;
 
+
 class IntegrityChecker
 {
     /** @var array  */
@@ -19,9 +20,22 @@ class IntegrityChecker
     /**
      * @return bool
      */
-    public function check()
+    public function checkConfig()
     {
         foreach ($this->configs as $fileName => $fileSpec) {
+            $this->checkFile($fileName, $fileSpec);
+        }
+
+        return true;
+    }
+
+    /**
+     * @param string $fileName
+     * @param array $fileSpec
+     * @return bool
+     */
+    public function checkFile($fileName, $fileSpec)
+    {
             $reader = new FileReader($fileName);
             $handle = $reader->getHandle();
 
@@ -38,7 +52,6 @@ class IntegrityChecker
             if (isset($fileSpec['keys'])) {
                 $this->checkKeys($keys, $fileSpec['keys'], $fileName);
             }
-        }
 
         return true;
     }
@@ -85,9 +98,22 @@ class IntegrityChecker
                 case 'Numeric':
                     if (!is_numeric($data[$column])) {
                         $err = sprintf(
-                            "Unexpected type of column, file %s, line %d: expected Number",
+                            "Unexpected type of column, file %s, line %d, column %d: expected Number",
                             $fileName,
-                            $row
+                            $row,
+                            $column + 1
+                        );
+
+                        throw new \Exception($err);
+                    }
+                    break;
+                case 'Date':
+                    if (!$this->validateDate($data[$column])) {
+                        $err = sprintf(
+                            "Unexpected type of column, file %s, line %d, column %d: expected Date",
+                            $fileName,
+                            $row,
+                            $column + 1
                         );
 
                         throw new \Exception($err);
@@ -95,6 +121,16 @@ class IntegrityChecker
                     break;
             }
         }
+    }
+
+    /**
+     * @param $date
+     * @return bool
+     */
+    function validateDate($date)
+    {
+        $testDate = \DateTime::createFromFormat(Config::DATE_FORMAT, $date);
+        return $testDate && $testDate->format(Config::DATE_FORMAT) === $date;
     }
 
     /**

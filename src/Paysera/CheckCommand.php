@@ -8,6 +8,7 @@
 namespace Paysera;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -23,6 +24,7 @@ class CheckCommand extends Command
     {
         $this
             ->setName('check')
+            ->addArgument('file', InputArgument::OPTIONAL)
             ->setDescription('Check App integrity');
     }
 
@@ -33,8 +35,14 @@ class CheckCommand extends Command
     {
         $checker = new IntegrityChecker(Config::CONFIG_FILES);
 
-        if ($checker->check()) {
+        if ($checker->checkConfig()) {
             $output->writeln("<info>Config files are correct</info>");
+        }
+
+        if ($userFile = $input->getArgument('file')) {
+            if ($checker->checkFile($userFile, ['format' => Config::USER_DATA_FORMAT])) {
+                $output->writeln("<info>User supplied file " . $userFile. " is correct</info>");
+            }
         }
     }
 }
