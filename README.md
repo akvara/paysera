@@ -20,7 +20,6 @@ Run the following commands:
 
 ## Installation
 
-
 Run the following commands:
 
     php composer.phar install
@@ -29,6 +28,18 @@ If you don't have Composer yet, download it following the instructions on
 http://getcomposer.org/ or just run the following command:
 
     curl -s https://getcomposer.org/installer | php
+    
+## Configuration
+
+### Currency rates
+
+Allowed currencies and their rates to base currency [EUR] are stored in file ./curr_rates.csv
+
+### Applied charges
+
+Applied charges are stored in file ./prices.csv
+
+Both files MUST be present in App's directory
 
 ## Running commands
 
@@ -36,19 +47,22 @@ It is suggested that you add ./bin/ directory to your PATH: in this case you'll 
 
 To run application, enter:
 
-    paysera [import-file-name]
+    paysera calc {data-file-name}
     
-where [import-file-name] is the file you want to process.
+where {data-file-name} is the file you want to process.
+
+To run application self-check, enter:
+
+    paysera check [{data-file-name}]
+    
+where optional {data-file-name} is the file you want to process.
  
 ## Running tests
 
 Tests are run by executing command:
 
-    phpunit
-
-Or, you you do not have ./bin/ directory in your PATH:
-
-    ./bin/phpunit
+    phpspec run
+    
 
 
 Enjoy!

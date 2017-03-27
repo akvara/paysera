@@ -31,6 +31,10 @@ class CheckCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        IntegrityChecker::check(Config::CONFIG_FILES);
+        $checker = new IntegrityChecker(Config::CONFIG_FILES);
+
+        if ($checker->check()) {
+            $output->writeln("<info>Config files are correct</info>");
+        }
     }
 }
