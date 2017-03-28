@@ -15,10 +15,13 @@ class Loader
     {
         $handle = (new FileReader($fileName))->getHandle();
         $config = [];
+
         while (($data = fgetcsv($handle, 0, Config::DELIMITER)) !== FALSE) {
-            $config[] = $data;
+            $val = strpos($data[1], '.') ? floatval($data[1]) : intval($data[1]);
+            $config[$data[0]] = $val;
         }
 
         return $config;
     }
+
 }

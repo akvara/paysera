@@ -3,11 +3,11 @@
 namespace spec\Paysera;
 
 use Paysera\Config;
-use Paysera\IntegrityValidator;
+use Paysera\CsvFileValidator;
 use PhpSpec\ObjectBehavior;
 use org\bovigo\vfs\vfsStream;
 
-class IntegrityValidatorSpec extends ObjectBehavior
+class CsvFileValidatorSpec extends ObjectBehavior
 {
     private $root;
     private $fileName;
@@ -22,7 +22,7 @@ class IntegrityValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(IntegrityValidator::class);
+        $this->shouldHaveType(CsvFileValidator::class);
     }
 
     function it_passes_correct_config_file()

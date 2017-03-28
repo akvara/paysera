@@ -3,7 +3,7 @@
 namespace Paysera;
 
 
-class IntegrityValidator
+class CsvFileValidator
 {
     private $currencies = [];
     /**
@@ -173,7 +173,7 @@ class IntegrityValidator
 
     /**
      * @param array $currencies
-     * @return IntegrityValidator
+     * @return CsvFileValidator
      */
     public function setCurrencies($currencies)
     {

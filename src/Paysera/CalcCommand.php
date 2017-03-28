@@ -15,8 +15,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CalcCommand extends Command
 {
-
-
     /**
      *
      */
@@ -26,7 +24,6 @@ class CalcCommand extends Command
             ->setName('calc')
             ->setDescription('Calculate commisions ')
             ->addArgument('file', InputArgument::REQUIRED, "File to import data from");
-
     }
 
     /**
@@ -40,35 +37,28 @@ class CalcCommand extends Command
         $info = 'Getting data from file ' . $fileName;
         $output->writeln("<info>{$info}</info>");
 
-        $row = 1;
 
-        $reader = new FileReader($fileName);
-        $handle = $reader->getHandle();
+        $currencies = Loader::loadConfig(Config::CURRENCIES);
+        $prices = Loader::loadConfig(Config::PRICE_LIST);
+var_dump($currencies);
+var_dump($prices);
+//        $row = 1;
+//
+//        $reader = new FileReader($fileName);
+//        $handle = $reader->getHandle();
+//
+//
+//            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+//                $num = count($data);
+//                echo "<p> $num fields in line $row: <br /></p>\n";
+//                $row++;
+//                for ($c=0; $c < $num; $c++) {
+//                    echo $data[$c] . "<br />\n";
+//                }
+//            }
+//         $reader->close();
 
-
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                $num = count($data);
-                echo "<p> $num fields in line $row: <br /></p>\n";
-                $row++;
-                for ($c=0; $c < $num; $c++) {
-                    echo $data[$c] . "<br />\n";
-                }
-            }
-         $reader->close();
-    }
-
-    /**
-     *
-     */
-    private function readConfigs()
-    {
-
-    }
-
-    private function readConfFile($fileName)
-    {
-        $reader = new FileReader(self::CURRENCIES);
-        $handle = $reader->getHandle();
+        return 0;
     }
 
 }

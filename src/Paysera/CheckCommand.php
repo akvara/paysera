@@ -37,7 +37,7 @@ class CheckCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $validator = new IntegrityValidator();
+        $validator = new CsvFileValidator();
 
         foreach (Config::CONFIG_FILES as $fileName => $fileSpec) {
             $validator->validateFile($fileName, $fileSpec);
@@ -45,16 +45,13 @@ class CheckCommand extends Command
         $output->writeln("<info>Config files are correct</info>");
 
         if ($userFile = $input->getArgument('file')) {
-            $currencies = (Loader::loadConfig(Config::CURRENCIES));
-            $validator->setCurrencies($this->flatten($currencies));
+            $currencies = Loader::loadConfig(Config::CURRENCIES);
+            $validator->setCurrencies(array_keys($currencies));
             $validator->validateFile($userFile, ['format' => Config::USER_DATA_FORMAT]);
             $output->writeln("<info>User supplied file " . $userFile. " is correct</info>");
         }
+        return 0;
     }
 
-    function flatten(array $array) {
-        $return = [];
-        array_walk_recursive($array, function($a) use (&$return) { $return[] = $a; });
-        return $return;
-    }
+
 }
