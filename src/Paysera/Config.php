@@ -18,10 +18,10 @@ final class Config
     const CURRENCIES = 'curr_rates.csv';
 
     /** Paysera charges */
-    const PRICE_LIST = 'prices.csv';
+    const TARIFFS = 'tariffs.csv';
 
     /** Compulsory config keys for charges config */
-    const PRICE_LIST_KEYS = [
+    const TARIFFS_KEYS = [
         'IN_COMM_RATE',
         'IN_COMM_MAX',
         'OUT_COMM_RATE_NAT',
@@ -58,9 +58,9 @@ final class Config
         self::CURRENCIES => [
             'format' => self::CONFIG_FORMAT
         ],
-        self::PRICE_LIST => [
+        self::TARIFFS => [
             'format' => self::CONFIG_FORMAT,
-            'keys' => self::PRICE_LIST_KEYS
+            'keys' => self::TARIFFS_KEYS
         ]
     ];
 

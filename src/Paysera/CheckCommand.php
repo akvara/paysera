@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CheckCommand extends Command
 {
     const CURRENCIES = 'curr_rates.csv',
-          PRICELIST = 'prices.csv';
+          PRICELIST = 'tariffs.csv';
 
     /**
      * Configure Check command

@@ -39,7 +39,7 @@ class CalcCommand extends Command
 
 
         $currencies = Loader::loadConfig(Config::CURRENCIES);
-        $prices = Loader::loadConfig(Config::PRICE_LIST);
+        $prices = Loader::loadConfig(Config::TARIFFS);
 var_dump($currencies);
 var_dump($prices);
 //        $row = 1;
