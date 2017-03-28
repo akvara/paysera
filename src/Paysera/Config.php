@@ -31,15 +31,16 @@ final class Config
         'OUT_MIN_COMM_LEG'
     ];
 
-    /** Enum types of data */
     const ENUMS = [
-        'client-type' => [
+        /** Client types */
+        'ClientType' => [
             'private' => 'natural',
             'company' => 'legal'
         ],
-        'direction' => [
-            'in' => 'cash_in',
-            'out' => 'cash_out'
+        /** Money flow directions */
+        'Direction' => [
+                'in' => 'cash_in',
+                'out' => 'cash_out'
         ]
     ];
 
@@ -47,7 +48,7 @@ final class Config
     const CONFIG_FORMAT = ['String', 'Numeric'];
 
     /** User data format is: 2016-01-05,1,natural,cash_in,200.00,EUR */
-    const USER_DATA_FORMAT = ['Date', 'Numeric', 'Enum0', 'Enum1', 'Numeric', 'Currency'];
+    const USER_DATA_FORMAT = ['Date', 'Numeric', 'ClientType', 'Direction', 'Numeric', 'Currency'];
 
     /** Date format is: Y-m-d */
     const DATE_FORMAT = 'Y-m-d';

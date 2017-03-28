@@ -83,12 +83,25 @@ class IntegrityValidator
                 case 'Date':
                     if (!$this->validateDate($data[$column])) {
                         $err = sprintf(
-                            "Unexpected type of column, file %s, line %d, column %d: expected Date",
+                            "Incorrect date in file %s, line %d column %d",
                             $fileName,
                             $row,
                             $column + 1
                         );
 
+                        throw new \Exception($err);
+                    }
+                    break;
+                case 'ClientType':
+                case 'Direction':
+                    $index = $format[$column][4];
+                    if (!$this->validateEnum(Config::ENUMS[$format[$column]], $data[$column])) {
+                        $err = sprintf(
+                            "Invalid value in file %s, line %d column %d",
+                            $fileName,
+                            $row,
+                            $column + 1
+                        );
                         throw new \Exception($err);
                     }
                     break;
@@ -104,6 +117,16 @@ class IntegrityValidator
     {
         $testDate = \DateTime::createFromFormat(Config::DATE_FORMAT, $date);
         return $testDate && $testDate->format(Config::DATE_FORMAT) === $date;
+    }
+
+    /**
+     * @param $enum
+     * @param $data
+     * @return bool
+     */
+    function validateEnum($enum, $data)
+    {
+        return in_array($data, $enum);
     }
 
     /**

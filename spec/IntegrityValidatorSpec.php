@@ -116,4 +116,47 @@ class IntegrityValidatorSpec extends ObjectBehavior
         $this->validateFile($this->mockedFileName, $configs)->shouldReturn(null);
     }
 
+    function it_throws_exception_on_wrong_date()
+    {
+        $config_file_content = "2016-66-77,1,natural,cash_in,200.00,EUR"; // Mitsake :)
+
+        vfsStream::newFile($this->fileName)->at($this->root)->withContent($config_file_content);
+
+        $configs = [
+            'format' => Config::USER_DATA_FORMAT
+        ];
+
+        $expectedException = sprintf(
+            "Incorrect date in file %s, line %d column %d",
+            $this->mockedFileName,
+            1,
+            1
+        );
+
+        $this
+            ->shouldThrow(new \Exception($expectedException))
+            ->during('validateFile', [$this->mockedFileName, $configs]);
+    }
+
+    function it_throws_exception_on_wrong_enum()
+    {
+        $config_file_content = "2016-01-05,1,naturalist,cash_in,200.00,EUR"; // Mitsake :)
+
+        vfsStream::newFile($this->fileName)->at($this->root)->withContent($config_file_content);
+
+        $configs = [
+            'format' => Config::USER_DATA_FORMAT
+        ];
+
+        $expectedException = sprintf(
+            "Invalid value in file %s, line %d column %d",
+            $this->mockedFileName,
+            1,
+            3
+        );
+
+        $this
+            ->shouldThrow(new \Exception($expectedException))
+            ->during('validateFile', [$this->mockedFileName, $configs]);
+    }
 }
