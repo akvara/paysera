@@ -5,28 +5,28 @@ namespace Paysera;
 
 class IntegrityValidator
 {
+    private $currencies = [];
     /**
      * @param $fileName
      * @param array $fileSpec
      */
     public function validateFile($fileName, array $fileSpec)
     {
-            $reader = new FileReader($fileName);
-            $handle = $reader->getHandle();
+        $handle = (new FileReader($fileName))->getHandle();
 
-            $row = 0;
-            $keys = [];
+        $row = 0;
+        $keys = [];
 
-            while (($data = fgetcsv($handle, 0, Config::DELIMITER)) !== FALSE) {
-                $row++;
-                $keys[] = $data[0];
-                $this->checkColumnCount($data, $fileSpec['format'], $fileName, $row);
-                $this->checkColumnTypes($data, $fileSpec['format'], $fileName, $row);
-            }
+        while (($data = fgetcsv($handle, 0, Config::DELIMITER)) !== FALSE) {
+            $row++;
+            $keys[] = $data[0];
+            $this->checkColumnCount($data, $fileSpec['format'], $fileName, $row);
+            $this->checkColumnTypes($data, $fileSpec['format'], $fileName, $row);
+        }
 
-            if (isset($fileSpec['keys'])) {
-                $this->checkKeys($keys, $fileSpec['keys'], $fileName);
-            }
+        if (isset($fileSpec['keys'])) {
+            $this->checkKeys($keys, $fileSpec['keys'], $fileName);
+        }
     }
 
     /**
@@ -92,9 +92,20 @@ class IntegrityValidator
                         throw new \Exception($err);
                     }
                     break;
-                case 'ClientType':
-                case 'Direction':
-                    $index = $format[$column][4];
+                case 'Currency':
+                    if (!$this->validateCurrency($data[$column])) {
+                        $err = sprintf(
+                            "Incorrect currency %s in file %s, line %d column %d",
+                            $data[$column],
+                            $fileName,
+                            $row,
+                            $column + 1
+                        );
+
+                        throw new \Exception($err);
+                    }
+                    break;
+                case in_array($format[$column], array_keys(Config::ENUMS)):
                     if (!$this->validateEnum(Config::ENUMS[$format[$column]], $data[$column])) {
                         $err = sprintf(
                             "Invalid value in file %s, line %d column %d",
@@ -129,6 +140,16 @@ class IntegrityValidator
         return in_array($data, $enum);
     }
 
+
+    /**
+     * @param $data
+     * @return bool
+     */
+    function validateCurrency($data)
+    {
+        return in_array($data, $this->currencies);
+    }
+
     /**
      * @param $keys
      * @param $required
@@ -148,5 +169,15 @@ class IntegrityValidator
                 throw new \Exception($err);
             }
         }
+    }
+
+    /**
+     * @param array $currencies
+     * @return IntegrityValidator
+     */
+    public function setCurrencies($currencies)
+    {
+        $this->currencies = $currencies;
+        return $this;
     }
 }

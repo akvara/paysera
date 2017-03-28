@@ -113,12 +113,15 @@ class IntegrityValidatorSpec extends ObjectBehavior
             'format' => Config::USER_DATA_FORMAT
         ];
 
-        $this->validateFile($this->mockedFileName, $configs)->shouldReturn(null);
+        $this
+            ->setCurrencies(['EUR'])
+            ->validateFile($this->mockedFileName, $configs)
+            ->shouldReturn(null);
     }
 
     function it_throws_exception_on_wrong_date()
     {
-        $config_file_content = "2016-66-77,1,natural,cash_in,200.00,EUR"; // Mitsake :)
+        $config_file_content = "2016-66-77,1,natural,cash_in,200.00,EUR"; // Mitsake in dte:)
 
         vfsStream::newFile($this->fileName)->at($this->root)->withContent($config_file_content);
 
@@ -140,7 +143,7 @@ class IntegrityValidatorSpec extends ObjectBehavior
 
     function it_throws_exception_on_wrong_enum()
     {
-        $config_file_content = "2016-01-05,1,naturalist,cash_in,200.00,EUR"; // Mitsake :)
+        $config_file_content = "2016-01-05,1,naturaLIST,cash_in,200.00,EUR"; // Mitsake in tpe :)
 
         vfsStream::newFile($this->fileName)->at($this->root)->withContent($config_file_content);
 
@@ -156,6 +159,30 @@ class IntegrityValidatorSpec extends ObjectBehavior
         );
 
         $this
+            ->shouldThrow(new \Exception($expectedException))
+            ->during('validateFile', [$this->mockedFileName, $configs]);
+    }
+
+    function it_throws_exception_on_wrong_currency()
+    {
+        $config_file_content = "2016-01-05,1,natural,cash_in,200.00,POM"; // Mitsake in crency :)
+
+        vfsStream::newFile($this->fileName)->at($this->root)->withContent($config_file_content);
+
+        $configs = [
+            'format' => Config::USER_DATA_FORMAT
+        ];
+
+        $expectedException = sprintf(
+            "Incorrect currency %s in file %s, line %d column %d",
+            'POM',
+            $this->mockedFileName,
+            1,
+            6
+        );
+
+        $this
+            ->setCurrencies(['EUR'])
             ->shouldThrow(new \Exception($expectedException))
             ->during('validateFile', [$this->mockedFileName, $configs]);
     }

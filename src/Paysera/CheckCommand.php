@@ -37,16 +37,24 @@ class CheckCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $checker = new IntegrityValidator();
+        $validator = new IntegrityValidator();
 
         foreach (Config::CONFIG_FILES as $fileName => $fileSpec) {
-            $checker->validateFile($fileName, $fileSpec);
+            $validator->validateFile($fileName, $fileSpec);
         }
         $output->writeln("<info>Config files are correct</info>");
 
         if ($userFile = $input->getArgument('file')) {
-            $checker->validateFile($userFile, ['format' => Config::USER_DATA_FORMAT]);
+            $currencies = (Loader::loadConfig(Config::CURRENCIES));
+            $validator->setCurrencies($this->flatten($currencies));
+            $validator->validateFile($userFile, ['format' => Config::USER_DATA_FORMAT]);
             $output->writeln("<info>User supplied file " . $userFile. " is correct</info>");
         }
+    }
+
+    function flatten(array $array) {
+        $return = [];
+        array_walk_recursive($array, function($a) use (&$return) { $return[] = $a; });
+        return $return;
     }
 }
