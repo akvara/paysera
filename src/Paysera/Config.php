@@ -20,10 +20,13 @@ final class Config
     /** Paysera charges */
     const TARIFFS = 'tariffs.csv';
 
+    /** Paysera charges */
+    const BASE_CURRENCY = 'EUR';
+
     /** Compulsory config keys for charges config */
     const TARIFFS_KEYS = [
-        'IN_COMM_RATE',
-        'IN_COMM_MAX',
+        'IN_RATE',
+        'IN_MAX',
         'OUT_COMM_RATE_NAT',
         'OUT_LIMIT_NAT',
         'OUT_COMM_OP_NAT',
