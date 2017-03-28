@@ -46,12 +46,12 @@ class PaymentSpec extends ObjectBehavior
 
     function it_should_calc_direction_in_rate()
     {
-        $this->beConstructedWith(new Money(10, 'FOR'), 'cash_in', 'natural');
+        $this->beConstructedWith(new Money(100, 'FOR'), 'cash_in', 'natural');
 
         $this
             ->commision(self::TEST_TARIFFS, self::TEST_RATES)
             ->getAmount()
-            ->shouldBe(10 * self::TEST_TARIFFS['IN_RATE']);
+            ->shouldBe(100 * self::TEST_TARIFFS['IN_RATE'] / 100);
     }
 
     function it_should_not_exceed_max_in_commision()
@@ -64,5 +64,27 @@ class PaymentSpec extends ObjectBehavior
             ->commision(self::TEST_TARIFFS, self::TEST_RATES)
             ->getAmount()
             ->shouldBe($max->amountIn('FOR', self::TEST_RATES));
+    }
+
+    function it_should_calc_direction_out_for_companies()
+    {
+        $this->beConstructedWith(new Money(10000, 'FOR'), 'cash_out', 'legal');
+
+        $this
+            ->commision(self::TEST_TARIFFS, self::TEST_RATES)
+            ->getAmount()
+            ->shouldBe(10000 * self::TEST_TARIFFS['OUT_RATE_LEG'] / 100);
+    }
+
+    function it_should_not_be_less_than_min_for_companies()
+    {
+        $min = new Money(self::TEST_TARIFFS['OUT_MIN_LEG'], Config::BASE_CURRENCY);
+
+        $this->beConstructedWith(new Money(1, 'FOR'), 'cash_out', 'legal');
+
+        $this
+            ->commision(self::TEST_TARIFFS, self::TEST_RATES)
+            ->getAmount()
+            ->shouldBe($min->amountIn('FOR', self::TEST_RATES));
     }
 }

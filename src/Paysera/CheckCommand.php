@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CheckCommand extends Command
 {
-    const CURRENCIES = 'curr_rates.csv',
+    const CURRENCIES = 'currency_rates.csv',
           PRICELIST = 'tariffs.csv';
 
     /**
@@ -44,8 +44,10 @@ class CheckCommand extends Command
         }
         $output->writeln("<info>Config files are correct</info>");
 
+        $currencies = Loader::loadConfig(Config::CURRENCIES);
+        $rates = Loader::loadConfig(Config::RATES);
+
         if ($userFile = $input->getArgument('file')) {
-            $currencies = Loader::loadConfig(Config::CURRENCIES);
             $validator->setCurrencies(array_keys($currencies));
             $validator->validateFile($userFile, ['format' => Config::USER_DATA_FORMAT]);
             $output->writeln("<info>User supplied file " . $userFile. " is correct</info>");

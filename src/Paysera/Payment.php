@@ -12,28 +12,36 @@ class Payment
     private $direction;
 
     /** @var string */
-    private $payee;
+    private $clientType;
 
     /**
      * Payment constructor.
      * @param Money $money
      * @param string $direction
-     * @param string $payee
+     * @param string $clientType
      * @throws \Exception
      */
-    public function __construct(Money $money, $direction, $payee)
+    public function __construct(Money $money, $direction, $clientType)
     {
         if (!in_array($direction, array_values(Config::ENUMS['Direction']))) {
             throw new \Exception('Illegal direction.');
         }
 
-        if (!in_array($payee, array_values(Config::ENUMS['ClientType']))) {
+        if (!in_array($clientType, array_values(Config::ENUMS['ClientType']))) {
             throw new \Exception('Illegal client type.');
         }
 
         $this->money = $money;
         $this->direction = $direction;
-        $this->payee = $payee;
+        $this->clientType = $clientType;
+    }
+
+    /**
+     * @return string
+     */
+    public function currency()
+    {
+        return $this->money->getCurrency();
     }
 
     public function commision(array $tariffs, array $rates)
@@ -48,9 +56,8 @@ class Payment
     {
         $upperLimit = new Money($tariffs['IN_MAX'], Config::BASE_CURRENCY);
 
-        $comm = $this->money->multiply($tariffs['IN_RATE']);
+        $comm = $this->money->multipliedBy($tariffs['IN_RATE'] / 100);
 
-        var_dump($upperLimit->amountIn($comm->getCurrency(), $rates));
         if ($comm->isMore($upperLimit, $rates)) {
             return new Money(
                 $upperLimit->amountIn($comm->getCurrency(), $rates),
@@ -58,23 +65,30 @@ class Payment
             );
         }
 
-
         return $comm;
     }
 
     private function calculateDirectionOut(array $tariffs, array $rates)
     {
-        $comm = $this->money;
+        if ($this->clientType === Config::ENUMS['ClientType']['private']) {
+            return $this->calculateDirectionOutForPrivate();
+        }
+
+        $lowerLimit = new Money($tariffs['OUT_MIN_LEG'], Config::BASE_CURRENCY);
+        $comm = $this->money->multipliedBy($tariffs['OUT_RATE_LEG'] / 100);
+
+        if ($lowerLimit->isMore($comm, $rates)) {
+            return new Money(
+                $lowerLimit->amountIn($comm->getCurrency(), $rates),
+                $this->money->getCurrency()
+            );
+        }
 
         return $comm;
-
     }
-    /**
-     * @return string
-     */
-    public function currency()
+
+    private function calculateDirectionOutForPrivate()
     {
-//        var_dump( $this->money->currency() );
-        return $this->money->getCurrency();
+        return 0;
     }
 }

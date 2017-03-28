@@ -49,13 +49,33 @@ class Money
         return $this->amount * $rates[$foreignCurrency];
     }
 
-    public function multiply($factor)
+    public function multipliedBy($factor)
     {
         return new Money($this->amount * $factor, $this->currency);
     }
 
+    /**
+     * Compares this Money to another
+     *
+     * @param Money $comparedTo
+     * @param array $rates
+     * @return bool
+     */
     public function isMore(Money $comparedTo, array $rates)
     {
         return $this->amount > $comparedTo->amountIn($this->getCurrency(), $rates);
+    }
+
+    /**
+     * Rounds according to The Rules
+     *
+     * @param $currencies
+     * @return float
+     */
+    public function rounded($currencies)
+    {
+        $accuracy = $currencies[$this->getCurrency()];
+
+        return ceil($this->amount / $accuracy) * $accuracy;
     }
 }

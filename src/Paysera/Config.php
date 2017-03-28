@@ -14,8 +14,11 @@ final class Config
     /** Data file delimiter */
     const DELIMITER = ',';
 
-    /** Currencies allowed as well as exchange rates */
-    const CURRENCIES = 'curr_rates.csv';
+    /** Currencies allowed as well as rounding accuracy */
+    const CURRENCIES = 'supported_currencies.csv';
+
+    /** Currency exchange rates */
+    const RATES = 'currency_rates.csv';
 
     /** Paysera charges */
     const TARIFFS = 'tariffs.csv';
@@ -27,11 +30,11 @@ final class Config
     const TARIFFS_KEYS = [
         'IN_RATE',
         'IN_MAX',
-        'OUT_COMM_RATE_NAT',
+        'OUT_RATE_NAT',
         'OUT_LIMIT_NAT',
-        'OUT_COMM_OP_NAT',
-        'OUT_COMM_RATE_LEG',
-        'OUT_MIN_COMM_LEG'
+        'OUT_OP_NAT',
+        'OUT_RATE_LEG',
+        'OUT_MIN_LEG'
     ];
 
     const ENUMS = [
@@ -59,6 +62,9 @@ final class Config
     /** Metadata for App Self-check */
     const CONFIG_FILES = [
         self::CURRENCIES => [
+            'format' => self::CONFIG_FORMAT
+        ],
+        self::RATES => [
             'format' => self::CONFIG_FORMAT
         ],
         self::TARIFFS => [

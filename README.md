@@ -31,15 +31,19 @@ http://getcomposer.org/ or just run the following command:
     
 ## Configuration
 
+### Currencies and rounding
+
+Allowed currencies and their rounding accuracy are stored in file ./supported_currencies.csv
+
 ### Currency rates
 
-Allowed currencies and their rates to base currency [EUR] are stored in file ./curr_rates.csv
+Currency exchange rates to base currency [EUR] are stored in file ./currency_rates.csv
 
 ### Applied charges
 
-Applied charges are stored in file ./prices.csv
+Applied charges are stored in file ./tariffs.csv
 
-Both files MUST be present in App's directory
+All three mentioned config files MUST be present in App's directory.
 
 ## Running commands
 
@@ -51,7 +55,7 @@ To run application, enter:
     
 where {data-file-name} is the file you want to process.
 
-To run application self-check, enter:
+To run application self-check and user data check, enter:
 
     paysera check [{data-file-name}]
     
