@@ -1,12 +1,16 @@
 <?php
 
-namespace spec\Paysera;
+namespace spec\Paysera\Entity;
 
 use Paysera\Config;
-use Paysera\Money;
-use Paysera\Payment;
+use Paysera\Entity\Money;
+use Paysera\Entity\Payment;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * Class PaymentSpec
+ * @package spec\Paysera
+ */
 class PaymentSpec extends ObjectBehavior
 {
     const TEST_TARIFFS = [

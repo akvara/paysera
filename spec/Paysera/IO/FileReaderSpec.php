@@ -1,10 +1,14 @@
 <?php
 
-namespace spec\Paysera;
+namespace spec\Paysera\IO;
 
-use Paysera\FileReader;
+use Paysera\IO\FileReader;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * Class FileReaderSpec
+ * @package spec\Paysera
+ */
 class FileReaderSpec extends ObjectBehavior
 {
     const NO_FILE = 'no_such_file';

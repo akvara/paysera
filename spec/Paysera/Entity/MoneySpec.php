@@ -1,11 +1,14 @@
 <?php
 
-namespace spec\Paysera;
+namespace spec\Paysera\Entity;
 
-use Paysera\Money;
+use Paysera\Entity\Money;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
+/**
+ * Class MoneySpec
+ * @package spec\Paysera
+ */
 class MoneySpec extends ObjectBehavior
 {
     const TEST_CURRENCIES = [

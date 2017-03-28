@@ -1,12 +1,16 @@
 <?php
 
-namespace spec\Paysera;
+namespace spec\Paysera\Validator;
 
 use Paysera\Config;
-use Paysera\CsvFileValidator;
+use Paysera\Validator\CsvFileValidator;
 use PhpSpec\ObjectBehavior;
 use org\bovigo\vfs\vfsStream;
 
+/**
+ * Class CsvFileValidatorSpec
+ * @package spec\Paysera
+ */
 class CsvFileValidatorSpec extends ObjectBehavior
 {
     private $root;
