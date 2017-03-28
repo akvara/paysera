@@ -4,14 +4,14 @@ namespace spec\Paysera\Entity;
 
 use Paysera\Config;
 use Paysera\Entity\Money;
-use Paysera\Entity\Payment;
+use Paysera\Entity\MoneyTransfer;
 use PhpSpec\ObjectBehavior;
 
 /**
- * Class PaymentSpec
+ * Class MoneyTransferSpec
  * @package spec\Paysera
  */
-class PaymentSpec extends ObjectBehavior
+class MoneyTransferSpec extends ObjectBehavior
 {
     const TEST_TARIFFS = [
         'IN_RATE'       => 0.03,
@@ -31,7 +31,7 @@ class PaymentSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->beConstructedWith(new Money(5000.23, 'EUR'), 'cash_in', 'natural');
-        $this->shouldHaveType(Payment::class);
+        $this->shouldHaveType(MoneyTransfer::class);
     }
 
     function it_should_throw_exception_on_incorrect_client_type()

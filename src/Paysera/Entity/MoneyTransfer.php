@@ -6,10 +6,10 @@ namespace Paysera\Entity;
 use Paysera\Config;
 
 /**
- * Class Payment
+ * Class MoneyTransfer
  * @package Paysera\Entity
  */
-class Payment
+class MoneyTransfer
 {
     /** @var Money */
     private $money;
@@ -21,7 +21,7 @@ class Payment
     private $clientType;
 
     /**
-     * Payment constructor.
+     * MoneyTransfer constructor.
      *
      * @param Money $money
      * @param string $direction

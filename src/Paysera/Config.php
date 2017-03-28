@@ -49,8 +49,8 @@ final class Config
         ],
         /** Money flow directions */
         'Direction' => [
-                'in' => 'cash_in',
-                'out' => 'cash_out'
+            'in' => 'cash_in',
+            'out' => 'cash_out'
         ]
     ];
 
