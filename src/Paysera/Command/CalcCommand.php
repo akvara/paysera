@@ -5,14 +5,20 @@
  * Time: 10.00
  */
 
-namespace Paysera;
+namespace Paysera\Command;
 
 
+use Paysera\Config;
+use Paysera\IO\Loader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class CalcCommand
+ * @package Paysera\Command
+ */
 class CalcCommand extends Command
 {
     /**
@@ -40,8 +46,6 @@ class CalcCommand extends Command
 
         $currencies = Loader::loadConfig(Config::CURRENCIES);
         $prices = Loader::loadConfig(Config::TARIFFS);
-var_dump($currencies);
-var_dump($prices);
 //        $row = 1;
 //
 //        $reader = new FileReader($fileName);

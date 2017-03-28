@@ -1,7 +1,12 @@
 <?php
 
-namespace Paysera;
+namespace Paysera\Entity;
 
+
+/**
+ * Class Money
+ * @package Paysera\Entity
+ */
 class Money
 {
     /** @var double */
@@ -18,12 +23,13 @@ class Money
      */
     public function __construct($amount, $currency)
     {
-//var_dump("construct:" , $amount, $currency) ;
         $this->amount = $amount;
         $this->currency = $currency;
     }
 
     /**
+     * Getter for amount
+     *
      * @return double
      */
     public function getAmount()
@@ -32,6 +38,8 @@ class Money
     }
 
     /**
+     * Getter for currency
+     *
      * @return string
      */
     public function getCurrency()
@@ -40,6 +48,8 @@ class Money
     }
 
     /**
+     * Calculates amount corresponding sum in other currency
+     *
      * @param $foreignCurrency
      * @param $rates
      * @return double
@@ -49,6 +59,12 @@ class Money
         return $this->amount * $rates[$foreignCurrency];
     }
 
+    /**
+     * Returns money multiplicated by given factor
+     *
+     * @param $factor
+     * @return Money
+     */
     public function multipliedBy($factor)
     {
         return new Money($this->amount * $factor, $this->currency);

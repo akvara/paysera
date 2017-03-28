@@ -1,8 +1,12 @@
 <?php
 
-namespace Paysera;
+namespace Paysera\IO;
 
 
+/**
+ * Class FileReader
+ * @package Paysera\IO
+ */
 class FileReader
 {
     /** @var resource */
@@ -10,6 +14,7 @@ class FileReader
 
     /**
      * FileReader constructor.
+     *
      * @param $fileName
      * @throws \Exception
      */
@@ -22,6 +27,8 @@ class FileReader
     }
 
     /**
+     * Returns file handle
+     *
      * @return resource
      */
     public function getHandle()
@@ -30,6 +37,8 @@ class FileReader
     }
 
     /**
+     * Closes file
+     *
      * @return bool
      */
     public function close()

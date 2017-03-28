@@ -9,6 +9,10 @@
 namespace Paysera;
 
 
+/**
+ * Class Config
+ * @package Paysera
+ */
 final class Config
 {
     /** Data file delimiter */
@@ -75,6 +79,7 @@ final class Config
 
     /**
      * Config constructor.
+     *
      * @throws \Exception
      */
     private function __construct(){

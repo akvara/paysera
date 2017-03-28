@@ -1,10 +1,20 @@
 <?php
 
-namespace Paysera;
+namespace Paysera\Validator;
 
 
+use Paysera\Config;
+use Paysera\IO\FileReader;
+
+/**
+ * Class CsvFileValidator
+ * @package Paysera\Validator
+ */
 class CsvFileValidator
 {
+    /**
+     * @var array
+     */
     private $currencies = [];
     /**
      * @param $fileName
@@ -30,6 +40,24 @@ class CsvFileValidator
     }
 
     /**
+     * Checks if all supported currencies have rates
+     *
+     * @param array $currencies
+     * @param array $rates
+     * @throws \Exception
+     */
+    public function checkCurrencyRates(array $currencies, array $rates)
+    {
+        foreach ($currencies as $currency => $accuracy) {
+            if (!in_array($currency, array_keys($rates))) {
+                throw new \Exception('Missing currency rate ' . $currency);
+            }
+        }
+    }
+
+    /**
+     * Checks if column count corresponds to requiredh
+     *
      * @param $data
      * @param $format
      * @param $fileName
@@ -54,6 +82,8 @@ class CsvFileValidator
     }
 
     /**
+     * Checks if column types correspond to required
+     *
      * @param $data
      * @param $format
      * @param $fileName
@@ -121,6 +151,8 @@ class CsvFileValidator
     }
 
     /**
+     * Validates date
+     *
      * @param $date
      * @return bool
      */
@@ -131,6 +163,8 @@ class CsvFileValidator
     }
 
     /**
+     * Validates ENUM
+     *
      * @param $enum
      * @param $data
      * @return bool
@@ -142,6 +176,8 @@ class CsvFileValidator
 
 
     /**
+     * Validates currency
+     *
      * @param $data
      * @return bool
      */
@@ -151,6 +187,8 @@ class CsvFileValidator
     }
 
     /**
+     * Checks if all required configurations keys are set
+     *
      * @param $keys
      * @param $required
      * @param $fileName
@@ -172,6 +210,8 @@ class CsvFileValidator
     }
 
     /**
+     * Setter for currencies
+     *
      * @param array $currencies
      * @return CsvFileValidator
      */

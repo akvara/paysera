@@ -1,8 +1,14 @@
 <?php
 
-namespace Paysera;
+namespace Paysera\Entity;
 
 
+use Paysera\Config;
+
+/**
+ * Class Payment
+ * @package Paysera\Entity
+ */
 class Payment
 {
     /** @var Money */
@@ -16,6 +22,7 @@ class Payment
 
     /**
      * Payment constructor.
+     *
      * @param Money $money
      * @param string $direction
      * @param string $clientType
@@ -37,6 +44,8 @@ class Payment
     }
 
     /**
+     * Getter for Money's currency
+     *
      * @return string
      */
     public function currency()
@@ -44,6 +53,13 @@ class Payment
         return $this->money->getCurrency();
     }
 
+    /**
+     * Calculates commisions
+     *
+     * @param array $tariffs
+     * @param array $rates
+     * @return int|Money
+     */
     public function commision(array $tariffs, array $rates)
     {
         if ($this->direction === Config::ENUMS['Direction']['out']) {
@@ -52,6 +68,13 @@ class Payment
         return $this->calculateDirectionIn($tariffs, $rates);
     }
 
+    /**
+     * Calculates commisions for inbound money
+     *
+     * @param array $tariffs
+     * @param array $rates
+     * @return Money
+     */
     private function calculateDirectionIn(array $tariffs, array $rates)
     {
         $upperLimit = new Money($tariffs['IN_MAX'], Config::BASE_CURRENCY);
@@ -68,6 +91,13 @@ class Payment
         return $comm;
     }
 
+    /**
+     * Calculates commisions for outbound money
+     *
+     * @param array $tariffs
+     * @param array $rates
+     * @return int|Money
+     */
     private function calculateDirectionOut(array $tariffs, array $rates)
     {
         if ($this->clientType === Config::ENUMS['ClientType']['private']) {
@@ -87,6 +117,9 @@ class Payment
         return $comm;
     }
 
+    /**
+     * @return int
+     */
     private function calculateDirectionOutForPrivate()
     {
         return 0;

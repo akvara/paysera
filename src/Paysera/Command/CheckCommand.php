@@ -5,18 +5,22 @@
  * Time: 10.00
  */
 
-namespace Paysera;
+namespace Paysera\Command;
 
+use Paysera\Config;
+use Paysera\IO\Loader;
+use Paysera\Validator\CsvFileValidator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class CheckCommand
+ * @package Paysera\Command
+ */
 class CheckCommand extends Command
 {
-    const CURRENCIES = 'currency_rates.csv',
-          PRICELIST = 'tariffs.csv';
-
     /**
      * Configure Check command
      */
@@ -33,7 +37,7 @@ class CheckCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|null
+     * @return int
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -42,10 +46,13 @@ class CheckCommand extends Command
         foreach (Config::CONFIG_FILES as $fileName => $fileSpec) {
             $validator->validateFile($fileName, $fileSpec);
         }
-        $output->writeln("<info>Config files are correct</info>");
 
         $currencies = Loader::loadConfig(Config::CURRENCIES);
         $rates = Loader::loadConfig(Config::RATES);
+
+        $validator->checkCurrencyRates($currencies, $rates);
+
+        $output->writeln("<info>Config files are correct</info>");
 
         if ($userFile = $input->getArgument('file')) {
             $validator->setCurrencies(array_keys($currencies));
@@ -54,6 +61,4 @@ class CheckCommand extends Command
         }
         return 0;
     }
-
-
 }

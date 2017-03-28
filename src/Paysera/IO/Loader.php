@@ -6,11 +6,24 @@
  * Time: 04.40
  */
 
-namespace Paysera;
+namespace Paysera\IO;
 
 
+use Paysera\Config;
+
+/**
+ * Class Loader
+ * @package Paysera\Loader
+ */
 class Loader
 {
+
+    /**
+     * Loads config file and returns as array
+     *
+     * @param $fileName
+     * @return array
+     */
     static public function loadConfig($fileName)
     {
         $handle = (new FileReader($fileName))->getHandle();

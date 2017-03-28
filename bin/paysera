@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-use Paysera\CalcCommand;
-use Paysera\CheckCommand;
+use Paysera\Command\CalcCommand;
+use Paysera\Command\CheckCommand;
 use Symfony\Component\Console\Application;
 
 require __DIR__.'/../vendor/autoload.php';
