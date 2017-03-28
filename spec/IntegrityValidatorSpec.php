@@ -3,11 +3,11 @@
 namespace spec\Paysera;
 
 use Paysera\Config;
-use Paysera\IntegrityChecker;
+use Paysera\IntegrityValidator;
 use PhpSpec\ObjectBehavior;
 use org\bovigo\vfs\vfsStream;
 
-class IntegrityCheckerSpec extends ObjectBehavior
+class IntegrityValidatorSpec extends ObjectBehavior
 {
     private $root;
     private $fileName;
@@ -22,11 +22,7 @@ class IntegrityCheckerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $configs = ['name' => ['format' => Config::CONFIG_FORMAT]];
-
-        $this->beConstructedWith($configs);
-
-        $this->shouldHaveType(IntegrityChecker::class);
+        $this->shouldHaveType(IntegrityValidator::class);
     }
 
     function it_passes_correct_config_file()
@@ -36,15 +32,11 @@ class IntegrityCheckerSpec extends ObjectBehavior
         vfsStream::newFile($this->fileName)->at($this->root)->withContent($config_file_content);
 
         $configs = [
-            $this->mockedFileName => [
-                'format' => Config::CONFIG_FORMAT,
-                'keys' => ['COMPULSORY']
-            ]
+            'format' => Config::CONFIG_FORMAT,
+            'keys' => ['COMPULSORY']
         ];
 
-        $this->beConstructedWith($configs);
-
-        $this->checkConfig()->shouldReturn(true);
+        $this->validateFile($this->mockedFileName, $configs)->shouldReturn(null);
     }
 
     function it_throws_exception_on_wrong_config_file_column_count()
@@ -61,13 +53,12 @@ class IntegrityCheckerSpec extends ObjectBehavior
             3
         );
 
-        $configs = [$this->mockedFileName => ['format' => Config::CONFIG_FORMAT]];
+        $configs = ['format' => Config::CONFIG_FORMAT];
 
-        $this->beConstructedWith($configs);
 
         $this
             ->shouldThrow(new \Exception($expectedException))
-            ->during('checkConfig');
+            ->during('validateFile', [$this->mockedFileName, $configs]);
     }
 
     function it_throws_exception_on_incorrect_config_file_format()
@@ -83,13 +74,11 @@ class IntegrityCheckerSpec extends ObjectBehavior
             2
         );
 
-        $configs = [$this->mockedFileName => ['format' => Config::CONFIG_FORMAT]];
-
-        $this->beConstructedWith($configs);
+        $configs = ['format' => Config::CONFIG_FORMAT];
 
         $this
             ->shouldThrow(new \Exception($expectedException))
-            ->during('checkConfig');
+            ->during('validateFile', [$this->mockedFileName, $configs]);
     }
 
     function it_throws_exception_on_missing_config_keys()
@@ -99,13 +88,9 @@ class IntegrityCheckerSpec extends ObjectBehavior
         vfsStream::newFile($this->fileName)->at($this->root)->withContent($config_file_content);
 
         $configs = [
-            $this->mockedFileName => [
-                'keys' => ['COMPULSORY'],
-                'format' => Config::CONFIG_FORMAT
-            ]
+            'keys' => ['COMPULSORY'],
+            'format' => Config::CONFIG_FORMAT
         ];
-
-        $this->beConstructedWith($configs);
 
         $expectedException = sprintf(
             "Missing key %s in config file %s",
@@ -115,6 +100,20 @@ class IntegrityCheckerSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new \Exception($expectedException))
-            ->during('checkConfig');
+            ->during('validateFile', [$this->mockedFileName, $configs]);
     }
+
+    function it_passes_correct_user_file()
+    {
+        $config_file_content = "2016-01-05,1,natural,cash_in,200.00,EUR"; // Mitsake :)
+
+        vfsStream::newFile($this->fileName)->at($this->root)->withContent($config_file_content);
+
+        $configs = [
+            'format' => Config::USER_DATA_FORMAT
+        ];
+
+        $this->validateFile($this->mockedFileName, $configs)->shouldReturn(null);
+    }
+
 }

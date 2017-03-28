@@ -30,19 +30,23 @@ class CheckCommand extends Command
 
     /**
      * Execute check command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|null
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $checker = new IntegrityChecker(Config::CONFIG_FILES);
+        $checker = new IntegrityValidator();
 
-        if ($checker->checkConfig()) {
-            $output->writeln("<info>Config files are correct</info>");
+        foreach (Config::CONFIG_FILES as $fileName => $fileSpec) {
+            $checker->validateFile($fileName, $fileSpec);
         }
+        $output->writeln("<info>Config files are correct</info>");
 
         if ($userFile = $input->getArgument('file')) {
-            if ($checker->checkFile($userFile, ['format' => Config::USER_DATA_FORMAT])) {
-                $output->writeln("<info>User supplied file " . $userFile. " is correct</info>");
-            }
+            $checker->validateFile($userFile, ['format' => Config::USER_DATA_FORMAT]);
+            $output->writeln("<info>User supplied file " . $userFile. " is correct</info>");
         }
     }
 }

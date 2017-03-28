@@ -3,38 +3,13 @@
 namespace Paysera;
 
 
-class IntegrityChecker
+class IntegrityValidator
 {
-    /** @var array  */
-    private $configs;
-
     /**
-     * IntegrityChecker constructor.
-     * @param array $configs
-     */
-    public function __construct(array $configs)
-    {
-        $this->configs = $configs;
-    }
-
-    /**
-     * @return bool
-     */
-    public function checkConfig()
-    {
-        foreach ($this->configs as $fileName => $fileSpec) {
-            $this->checkFile($fileName, $fileSpec);
-        }
-
-        return true;
-    }
-
-    /**
-     * @param string $fileName
+     * @param $fileName
      * @param array $fileSpec
-     * @return bool
      */
-    public function checkFile($fileName, $fileSpec)
+    public function validateFile($fileName, array $fileSpec)
     {
             $reader = new FileReader($fileName);
             $handle = $reader->getHandle();
@@ -52,8 +27,6 @@ class IntegrityChecker
             if (isset($fileSpec['keys'])) {
                 $this->checkKeys($keys, $fileSpec['keys'], $fileName);
             }
-
-        return true;
     }
 
     /**
