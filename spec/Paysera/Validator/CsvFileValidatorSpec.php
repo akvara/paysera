@@ -19,6 +19,7 @@ class CsvFileValidatorSpec extends ObjectBehavior
 
     function let()
     {
+        $this->beConstructedWith(['EUR' => 0.01]);
         $this->root = vfsStream::setup('dir');
         $this->fileName = "config.csv";
         $this->mockedFileName = vfsStream::url("dir/" . $this->fileName);
@@ -40,7 +41,7 @@ class CsvFileValidatorSpec extends ObjectBehavior
             'keys' => ['COMPULSORY']
         ];
 
-        $this->validateFile($this->mockedFileName, $configs)->shouldReturn(null);
+        $this->validateFile($this->mockedFileName, $configs)->shouldReturn(true);
     }
 
     function it_throws_exception_on_wrong_config_file_column_count()
@@ -118,9 +119,8 @@ class CsvFileValidatorSpec extends ObjectBehavior
         ];
 
         $this
-            ->setCurrencies(['EUR'])
             ->validateFile($this->mockedFileName, $configs)
-            ->shouldReturn(null);
+            ->shouldReturn(true);
     }
 
     function it_throws_exception_on_wrong_date()
@@ -186,7 +186,6 @@ class CsvFileValidatorSpec extends ObjectBehavior
         );
 
         $this
-            ->setCurrencies(['EUR'])
             ->shouldThrow(new \Exception($expectedException))
             ->during('validateFile', [$this->mockedFileName, $configs]);
     }

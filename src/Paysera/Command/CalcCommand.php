@@ -8,8 +8,11 @@
 namespace Paysera\Command;
 
 use Paysera\Config;
+use Paysera\Entity\Money;
 use Paysera\IO\ConfigLoader;
 use Paysera\IO\FileReader;
+use Paysera\Validator\SystemIntegrityValidator;
+use Paysera\Validator\UserDataValidator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,22 +43,27 @@ class CalcCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $fileName = $input->getArgument('file');
+        $currencies = ConfigLoader::loadConfig(Config::CURRENCIES);
+        $rates = ConfigLoader::loadConfig(Config::RATES);
+        $tariffs = ConfigLoader::loadConfig(Config::TARIFFS);
+
+        $systemIntergityCheck = new SystemIntegrityValidator($currencies, $rates);
+        $systemIntergityCheck->validate();
+
+        $userDataCheck = new UserDataValidator($currencies, $fileName);
+        $userDataCheck->validate();
+
         $info = 'Getting data from file ' . $fileName;
         $output->writeln("<info>{$info}</info>");
-
-        $currencies = ConfigLoader::loadConfig(Config::CURRENCIES);
-        $tariffs = ConfigLoader::loadConfig(Config::TARIFFS);
-        $row = 1;
 
         $reader = new FileReader($fileName);
         $handle = $reader->getHandle();
         while (($data = fgetcsv($handle, 0, ",")) !== FALSE) {
-//                $num = count($data);
-//                echo "<p> $num fields in line $row: <br /></p>\n";
-//                $row++;
-//                for ($c=0; $c < $num; $c++) {
-//                    echo $data[$c] . "<br />\n";
-//                }
+            $opDate = new \DateTime($data[0]);
+            $clientId = intval($data[1]);
+            $clientType = $data[2];
+            $opType = $data[3];
+            $money = new Money(floatval($data[4]),$data[5]);
         }
          $reader->close();
 

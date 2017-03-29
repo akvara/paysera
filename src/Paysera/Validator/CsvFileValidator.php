@@ -11,13 +11,25 @@ use Paysera\IO\FileReader;
  */
 class CsvFileValidator
 {
+    /** @var  array */
+    private $currencies;
+
     /**
-     * @var array
+     * CsvFileValidator constructor.
+     *
+     * @param array $currencies
      */
-    private $currencies = [];
+    public function __construct(array $currencies)
+    {
+        $this->currencies = $currencies;
+    }
+
     /**
+     * Validates given file according to given spec
+     *
      * @param $fileName
      * @param array $fileSpec
+     * @return bool
      */
     public function validateFile($fileName, array $fileSpec)
     {
@@ -36,6 +48,8 @@ class CsvFileValidator
         if (isset($fileSpec['keys'])) {
             $this->checkKeys($keys, $fileSpec['keys'], $fileName);
         }
+
+        return true;
     }
 
     /**
@@ -165,7 +179,7 @@ class CsvFileValidator
      */
     function validateCurrency($data)
     {
-        return in_array($data, $this->currencies);
+        return in_array($data, array_keys($this->currencies));
     }
 
     /**
@@ -189,17 +203,5 @@ class CsvFileValidator
                 throw new \Exception($err);
             }
         }
-    }
-
-    /**
-     * Setter for currencies
-     *
-     * @param array $currencies
-     * @return CsvFileValidator
-     */
-    public function setCurrencies($currencies)
-    {
-        $this->currencies = $currencies;
-        return $this;
     }
 }
