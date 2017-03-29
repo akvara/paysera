@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Paysera\Entity;
+namespace spec\Paysera\Operation;
 
-use Paysera\Entity\ClientsWithdrawals;
+use Paysera\Operation\ClientsWithdrawals;
 use PhpSpec\ObjectBehavior;
 
 /**
  * Class ClientsWithdrawalsSpec
- * @package spec\Paysera\Entity
+ * @package spec\Paysera\Operation
  */
 class ClientsWithdrawalsSpec extends ObjectBehavior
 {

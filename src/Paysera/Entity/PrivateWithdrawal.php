@@ -79,10 +79,10 @@ class PrivateWithdrawal
     /**
      * Calculates week start date
      *
-     * @param $date
+     * @param \DateTime $date
      * @return false|string
      */
-    private function weekStartsOn($date)
+    private function weekStartsOn(\DateTime $date)
     {
         if (!$date) return false;
         return date(Config::DATE_FORMAT, strtotime('Last Sunday + 1 day', $date->getTimestamp()));

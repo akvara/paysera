@@ -65,7 +65,6 @@ class CalcCommand extends Command
             $clientType = $data[2];
             $opType = $data[3];
             $money = new Money(floatval($data[4]),$data[5]);
-            
         }
 
         $reader->close();
