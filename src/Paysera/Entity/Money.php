@@ -76,11 +76,14 @@ class Money
      * @param $currencies
      * @return float
      */
-    public function rounded($currencies)
+    public function roundedPrint($currencies)
     {
         $accuracy = $currencies[$this->getCurrency()];
+        $value = ceil($this->amount / $accuracy) * $accuracy;
 
-        return ceil($this->amount / $accuracy) * $accuracy;
+        if($accuracy >= 1) return sprintf("%01d", $value);
+
+        return sprintf("%01.2f", $value);
     }
 
     /**

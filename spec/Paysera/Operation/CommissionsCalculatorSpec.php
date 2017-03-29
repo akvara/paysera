@@ -77,6 +77,20 @@ class CommissionsCalculatorSpec extends ObjectBehavior
             ->shouldBe(100 * self::TEST_TARIFFS['OUT_RATE_NAT'] / 100);
     }
 
+    function it_should_apply_default_rate_for_exceeded_sum_of_withdr_for_private()
+    {
+        $this
+            ->commissionsCashOutPrivate(
+                new Money(5500, 'FOR'),
+                1,
+                self::TEST_TARIFFS['OUT_LIMIT_SUM_NAT'] + 10000,
+                self::TEST_TARIFFS,
+                self::TEST_RATES
+            )
+            ->getAmount()
+            ->shouldBe(5500 * self::TEST_TARIFFS['OUT_RATE_NAT'] / 100);
+    }
+
     function it_should_respect_allowed_free_limit_per_week_for_private()
     {
         $limit = new Money(self::TEST_TARIFFS['OUT_LIMIT_SUM_NAT'], self::TEST_BASE_CURRENCY);

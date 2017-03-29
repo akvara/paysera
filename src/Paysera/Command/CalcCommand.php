@@ -11,6 +11,7 @@ use Paysera\Config;
 use Paysera\Entity\Money;
 use Paysera\IO\ConfigLoader;
 use Paysera\IO\FileReader;
+use Paysera\Operation\Transactor;
 use Paysera\Validator\SystemIntegrityValidator;
 use Paysera\Validator\UserDataValidator;
 use Symfony\Component\Console\Command\Command;
@@ -56,6 +57,8 @@ class CalcCommand extends Command
         $userDataCheck = new UserDataValidator($currencies, $fileName);
         $userDataCheck->validate();
 
+        $transactor = new Transactor($currencies, $rates, $tariffs);
+
         // Processing file
         $reader = new FileReader($fileName);
         $handle = $reader->getHandle();
@@ -65,6 +68,9 @@ class CalcCommand extends Command
             $clientType = $data[2];
             $opType = $data[3];
             $money = new Money(floatval($data[4]),$data[5]);
+
+            $comm = $transactor->process($opDate, $clientId, $clientType, $opType, $money)->roundedPrint($currencies);
+            $output->writeln($comm);
         }
 
         $reader->close();

@@ -43,28 +43,30 @@ class ClientsWithdrawals
     }
 
     /**
-     * Returns count of withdraw operations user did this week
+     * Returns count of withdraw operations user did given week
      *
      * @param $clientId
+     * @param \DateTime $date
      * @return int
      */
-    public function getClientWithdrawalCountPerWeek($clientId)
+    public function getClientWithdrawalCountPerWeek($clientId, \DateTime $date)
     {
         if (!isset($this->clientsWithdrawals[$clientId])) return 0;
 
-        return $this->clientsWithdrawals[$clientId]->getWithdrawalCount();
+        return $this->clientsWithdrawals[$clientId]->getWithdrawalCountThisWeek($date);
     }
 
     /**
      * Returns sum in base currency the user has withdrawn this week
      *
      * @param $clientId
-     * @return int
+     * @param \DateTime $date
+     * @return float
      */
-    public function getClientWithdrawnSumPerWeek($clientId)
+    public function getClientWithdrawnSumPerWeek($clientId, \DateTime $date)
     {
-        if (!isset($this->clientsWithdrawals[$clientId])) return 0;
+        if (!isset($this->clientsWithdrawals[$clientId])) return 0.00;
 
-        return $this->clientsWithdrawals[$clientId]->getSumTaken();
+        return $this->clientsWithdrawals[$clientId]->getSumTakenThisWeek($date);
     }
 }

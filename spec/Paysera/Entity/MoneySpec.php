@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * Class MoneySpec
- * @package spec\Paysera
+ * @package spec\Paysera\Entity
  */
 class MoneySpec extends ObjectBehavior
 {
@@ -58,13 +58,13 @@ class MoneySpec extends ObjectBehavior
     function it_can_round_itself_up_with_cents()
     {
         $this->beConstructedWith(4.023, 'EUR');
-        $this->rounded(self::TEST_CURRENCIES)->shouldBe(4.03);
+        $this->roundedPrint(self::TEST_CURRENCIES)->shouldBe("4.03");
     }
 
     function it_can_round_itself_up_without_cents()
     {
         $this->beConstructedWith(4.023, 'FOR');
-        $this->rounded(self::TEST_CURRENCIES)->shouldBe(5.00);
+        $this->roundedPrint(self::TEST_CURRENCIES)->shouldBe("5");
     }
 
     function it_can_deduct_sum_in_other_currency()

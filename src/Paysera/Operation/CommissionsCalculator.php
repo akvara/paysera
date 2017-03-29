@@ -55,8 +55,12 @@ class CommissionsCalculator
             return $money->multipliedBy($tariffs['OUT_RATE_NAT'] / 100);
         }
 
+        $taxable = $money;
         $commissionFreeSumInBaseCurr = $tariffs['OUT_LIMIT_SUM_NAT'] - $sumOfWithdrThisWeek;
-        $taxable = $money->deductInBaseCurr($commissionFreeSumInBaseCurr, $rates);
+
+        if ($commissionFreeSumInBaseCurr > 0) {
+            $taxable = $money->deductInBaseCurr($commissionFreeSumInBaseCurr, $rates);
+        }
 
         return new Money($taxable->getAmount() * $tariffs['OUT_RATE_NAT'] / 100, $money->getCurrency());
     }

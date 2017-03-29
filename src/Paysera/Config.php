@@ -1,13 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: andrius
  * Date: 17.3.27
  * Time: 22.24
  */
 
 namespace Paysera;
-
 
 /**
  * Class Config

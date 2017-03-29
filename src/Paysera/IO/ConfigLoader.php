@@ -11,7 +11,7 @@ use Paysera\Config;
 
 /**
  * Class ConfigLoader
- * @package Paysera\ConfigLoader
+ * @package Paysera\IO
  */
 class ConfigLoader
 {

@@ -25,8 +25,8 @@ class PrivateWithdrawalSpec extends ObjectBehavior
     function it_should_add_first_withdrawal_as_first()
     {
         $this
-            ->addWithdrawal(new \DateTime(), new Money(20, "FOR"), self::TEST_RATES)
-            ->getWithdrawalCount()
+            ->addWithdrawal(new \DateTime('2017-03-30'), new Money(20, "FOR"), self::TEST_RATES)
+            ->getWithdrawalCountThisWeek(new \DateTime('2017-03-30'))
             ->shouldEqual(1);
     }
 
@@ -37,8 +37,8 @@ class PrivateWithdrawalSpec extends ObjectBehavior
         $this->addWithdrawal(new \DateTime('2017-03-29'), new Money(45, "FOR"), self::TEST_RATES);
         $this->addWithdrawal(new \DateTime('2017-03-30'), new Money(60, "FOR"), self::TEST_RATES);
 
-        $this->getWithdrawalCount()->shouldEqual(4);
-        $this->getSumTaken()->shouldEqual(100.00);
+        $this->getWithdrawalCountThisWeek(new \DateTime('2017-03-30'))->shouldEqual(4);
+        $this->getSumTakenThisWeek(new \DateTime('2017-03-30'))->shouldEqual(100.00);
     }
 
     function it_should_start_new_week_withdrawals_from_zero()
@@ -47,7 +47,17 @@ class PrivateWithdrawalSpec extends ObjectBehavior
         $this->addWithdrawal(new \DateTime('2017-03-26'), new Money(30, "FOR"), self::TEST_RATES);
         $this->addWithdrawal(new \DateTime('2017-03-27'), new Money(60, "FOR"), self::TEST_RATES);
 
-        $this->getWithdrawalCount()->shouldEqual(1);
-        $this->getSumTaken()->shouldEqual(40.00);
+        $this->getWithdrawalCountThisWeek(new \DateTime('2017-03-30'))->shouldEqual(1);
+        $this->getSumTakenThisWeek(new \DateTime('2017-03-30'))->shouldEqual(40.00);
+    }
+
+    function it_should_not_count_withdrawals_older_than_one_week()
+    {
+        $this->addWithdrawal(new \DateTime('2017-03-01'), new Money(15, "FOR"), self::TEST_RATES);
+        $this->addWithdrawal(new \DateTime('2017-03-10'), new Money(30, "FOR"), self::TEST_RATES);
+        $this->addWithdrawal(new \DateTime('2017-03-20'), new Money(60, "FOR"), self::TEST_RATES);
+
+        $this->getWithdrawalCountThisWeek(new \DateTime('2017-03-30'))->shouldEqual(0);
+        $this->getSumTakenThisWeek(new \DateTime('2017-03-30'))->shouldEqual(0.00);
     }
 }

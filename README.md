@@ -65,14 +65,8 @@ where optional {data-file-name} is the file you want to process.
 
 Tests are run by executing commands:
 
-    phpspec run
-    ./bin/phpunit
+     vendor/bin/phpspec run 
     
-the latter can be simplified to
-
-    phpunit
-    
-if you have ./bin/ directory to your PATH.
     
 =====
 
@@ -82,7 +76,7 @@ Sistema paleidžiama bin/ direktorijoje esančiu vykdomuoju failu ./bin/paysera.
 
 Šiuo metu realizuotos komandos:
 - paysera check [failas] - sistemos integralumo ir vartotojo failo atitikimo specifikacijai patikrinimui
-- paysera calc failas - komisinių skaičiavimams atlikti
+- paysera calc _failas_ - komisinių skaičiavimams atlikti
 
 Sistema naudoja konfiguracinius failus csv formatu:
 
@@ -96,4 +90,6 @@ Duomenų failų, datos formatai ir dalis kitos verslo logikos gali būti konfig�
 
 Prieš pradėdama skaičiavimus sistema patikrina konfigūracinių failų ir vartotojo failo korektiškumą.
 
-Testams naudojama PHPSpec (verslo logikai) ir PHPUnit (komandinei eilutei).
+Testams naudojama PHPSpec.
+
+Detalesnis diegimo ir naudojimo aprašymas yra faile README.md.

@@ -33,20 +33,26 @@ class PrivateWithdrawal
     /**
      * Getter for withdraw count
      *
+     * @param \DateTime $date
      * @return int
      */
-    public function getWithdrawalCount()
+    public function getWithdrawalCountThisWeek(\DateTime $date)
     {
+        if ($this->isNewWeek($date)) return 0;
+
         return $this->withdrawalCount;
     }
 
     /**
      * Getter for sumTaken
      *
-     * @return double
+     * @param \DateTime $date
+     * @return float
      */
-    public function getSumTaken()
+    public function getSumTakenThisWeek(\DateTime $date)
     {
+        if ($this->isNewWeek($date)) return 0.00;
+
         return $this->sumTaken;
     }
 
@@ -61,12 +67,9 @@ class PrivateWithdrawal
     public function addWithdrawal(\DateTime $date, Money $money, array $rates)
     {
 
-        if (
-            !$this->lastWithdrawalDate ||
-            $this->weekStartsOn($this->lastWithdrawalDate) !== $this->weekStartsOn($date)
-        ) {
+        if ($this->isNewWeek($date)) {
             $this->lastWithdrawalDate = null;
-            $this->sumTaken = 0;
+            $this->sumTaken = 0.00;
             $this->withdrawalCount = 0;
         }
         $this->lastWithdrawalDate = $date;
@@ -86,5 +89,18 @@ class PrivateWithdrawal
     {
         if (!$date) return false;
         return date(Config::DATE_FORMAT, strtotime('Last Sunday + 1 day', $date->getTimestamp()));
+    }
+
+    /**
+     * Checks if last operation was not on the same week
+     * 
+     * @param \DateTime $date
+     * @return bool
+     */
+    private function isNewWeek(\DateTime $date)
+    {
+        return 
+            !$this->lastWithdrawalDate || 
+            $this->weekStartsOn($this->lastWithdrawalDate) !== $this->weekStartsOn($date);
     }
 }

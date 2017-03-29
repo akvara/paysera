@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * Class FileReaderSpec
- * @package spec\Paysera
+ * @package spec\Paysera\IO
  */
 class FileReaderSpec extends ObjectBehavior
 {

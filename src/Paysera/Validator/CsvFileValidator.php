@@ -33,7 +33,8 @@ class CsvFileValidator
      */
     public function validateFile($fileName, array $fileSpec)
     {
-        $handle = (new FileReader($fileName))->getHandle();
+        $reader = new FileReader($fileName);
+        $handle = $reader->getHandle();
 
         $row = 0;
         $keys = [];
@@ -48,6 +49,8 @@ class CsvFileValidator
         if (isset($fileSpec['keys'])) {
             $this->checkKeys($keys, $fileSpec['keys'], $fileName);
         }
+
+        $reader->close();
 
         return true;
     }

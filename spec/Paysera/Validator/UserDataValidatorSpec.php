@@ -5,6 +5,10 @@ namespace spec\Paysera\Validator;
 use Paysera\Validator\UserDataValidator;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * Class UserDataValidatorSpec
+ * @package spec\Paysera\Validator
+ */
 class UserDataValidatorSpec extends ObjectBehavior
 {
 

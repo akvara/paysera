@@ -9,17 +9,22 @@ use org\bovigo\vfs\vfsStream;
 
 /**
  * Class CsvFileValidatorSpec
- * @package spec\Paysera
+ * @package spec\Paysera\Validator
  */
 class CsvFileValidatorSpec extends ObjectBehavior
 {
+    const TEST_CURRENCIES = [
+        'EUR' => 0.01,
+        'FOR' => 1
+    ];
+
     private $root;
     private $fileName;
     private $mockedFileName;
 
     function let()
     {
-        $this->beConstructedWith(['EUR' => 0.01]);
+        $this->beConstructedWith(self::TEST_CURRENCIES);
         $this->root = vfsStream::setup('dir');
         $this->fileName = "config.csv";
         $this->mockedFileName = vfsStream::url("dir/" . $this->fileName);

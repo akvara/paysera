@@ -52,8 +52,8 @@ class Transactor
             return CommissionsCalculator::commissionsCashOutCompany($money, $this->tariffs, $this->rates);
         }
 
-        $countOfWithdrThisWeek = $this->clientsWithdrawals->getClientWithdrawalCountPerWeek($clientId);
-        $sumOfWithdrThisWeek = $this->clientsWithdrawals->getClientWithdrawnSumPerWeek($clientId);
+        $countOfWithdrThisWeek = $this->clientsWithdrawals->getClientWithdrawalCountPerWeek($clientId, $opDate);
+        $sumOfWithdrThisWeek = $this->clientsWithdrawals->getClientWithdrawnSumPerWeek($clientId, $opDate);
 
         $this
             ->clientsWithdrawals
