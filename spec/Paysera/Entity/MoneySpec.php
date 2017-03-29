@@ -18,7 +18,8 @@ class MoneySpec extends ObjectBehavior
 
     const TEST_RATES = [
         'EUR' => 1,
-        'FOR' => 1.5
+        'FOR' => 1.5,
+        'ANO' => 0.5
     ];
 
     function it_is_initializable()
@@ -27,10 +28,22 @@ class MoneySpec extends ObjectBehavior
         $this->shouldHaveType(Money::class);
     }
 
-    function it_can_calculate_itself_to_foreign_currency()
+    function it_can_calculate_itself_to_foreign_currency_case1()
     {
         $this->beConstructedWith(8, 'EUR');
         $this->amountIn('FOR', self::TEST_RATES)->shouldBe(8 * 1.5);
+    }
+
+    function it_can_calculate_itself_to_foreign_currency_case2()
+    {
+        $this->beConstructedWith(8, 'FOR');
+        $this->amountIn('EUR', self::TEST_RATES)->shouldBe(8 / 1.5);
+    }
+
+    function it_can_calculate_itself_to_foreign_currency_case3()
+    {
+        $this->beConstructedWith(8, 'ANO');
+        $this->amountIn('FOR', self::TEST_RATES)->shouldBe(8 / 0.5 * 1.5);
     }
 
     function it_can_estimate_if_is_more()

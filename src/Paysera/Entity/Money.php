@@ -56,7 +56,7 @@ class Money
      */
     public function amountIn($foreignCurrency, $rates)
     {
-        return $this->amount * $rates[$foreignCurrency];
+        return $this->amount / $rates[$this->currency] * $rates[$foreignCurrency];
     }
 
     /**

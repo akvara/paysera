@@ -20,6 +20,12 @@ class MoneyTransfer
     /** @var string */
     private $clientType;
 
+    /** @var integer */
+    private $clientId;
+
+    /** @var \DateTime */
+    private $date;
+
     /**
      * MoneyTransfer constructor.
      *
@@ -28,7 +34,7 @@ class MoneyTransfer
      * @param string $clientType
      * @throws \Exception
      */
-    public function __construct(Money $money, $direction, $clientType)
+    public function __construct(Money $money, $direction, $clientType, $clientId = null, $date = null)
     {
         if (!in_array($direction, array_values(Config::ENUMS['Direction']))) {
             throw new \Exception('Illegal direction.');
@@ -41,6 +47,8 @@ class MoneyTransfer
         $this->money = $money;
         $this->direction = $direction;
         $this->clientType = $clientType;
+        $this->clientId = $clientId;
+        $this->date = $date;
     }
 
     /**

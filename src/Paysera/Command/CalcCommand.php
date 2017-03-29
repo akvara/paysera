@@ -9,7 +9,7 @@ namespace Paysera\Command;
 
 
 use Paysera\Config;
-use Paysera\IO\Loader;
+use Paysera\IO\ConfigLoader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,8 +44,8 @@ class CalcCommand extends Command
         $output->writeln("<info>{$info}</info>");
 
 
-        $currencies = Loader::loadConfig(Config::CURRENCIES);
-        $prices = Loader::loadConfig(Config::TARIFFS);
+        $currencies = ConfigLoader::loadConfig(Config::CURRENCIES);
+        $prices = ConfigLoader::loadConfig(Config::TARIFFS);
 //        $row = 1;
 //
 //        $reader = new FileReader($fileName);

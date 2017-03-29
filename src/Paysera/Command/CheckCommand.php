@@ -8,7 +8,7 @@
 namespace Paysera\Command;
 
 use Paysera\Config;
-use Paysera\IO\Loader;
+use Paysera\IO\ConfigLoader;
 use Paysera\Validator\CsvFileValidator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -47,10 +47,10 @@ class CheckCommand extends Command
             $validator->validateFile($fileName, $fileSpec);
         }
 
-        $currencies = Loader::loadConfig(Config::CURRENCIES);
-        $rates = Loader::loadConfig(Config::RATES);
+        $currencies = ConfigLoader::loadConfig(Config::CURRENCIES);
+        $rates = ConfigLoader::loadConfig(Config::RATES);
 
-        $validator->checkCurrencyRates($currencies, $rates);
+        $this->checkCurrencyRates($currencies, $rates);
 
         $output->writeln("<info>Config files are correct</info>");
 
@@ -60,5 +60,21 @@ class CheckCommand extends Command
             $output->writeln("<info>User supplied file " . $userFile. " is correct</info>");
         }
         return 0;
+    }
+
+    /**
+     * Checks if all supported currencies have rates set
+     *
+     * @param array $currencies
+     * @param array $rates
+     * @throws \Exception
+     */
+    private function checkCurrencyRates(array $currencies, array $rates)
+    {
+        foreach ($currencies as $currency => $accuracy) {
+            if (!in_array($currency, array_keys($rates))) {
+                throw new \Exception('Missing currency rate ' . $currency);
+            }
+        }
     }
 }

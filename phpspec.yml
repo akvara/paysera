@@ -1,0 +1,4 @@
+formatter.name: pretty
+suites:
+  paysera_suite:
+    namespace: Paysera

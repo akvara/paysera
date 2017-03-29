@@ -12,10 +12,10 @@ namespace Paysera\IO;
 use Paysera\Config;
 
 /**
- * Class Loader
- * @package Paysera\Loader
+ * Class ConfigLoader
+ * @package Paysera\ConfigLoader
  */
-class Loader
+class ConfigLoader
 {
 
     /**

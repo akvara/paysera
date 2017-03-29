@@ -40,22 +40,6 @@ class CsvFileValidator
     }
 
     /**
-     * Checks if all supported currencies have rates
-     *
-     * @param array $currencies
-     * @param array $rates
-     * @throws \Exception
-     */
-    public function checkCurrencyRates(array $currencies, array $rates)
-    {
-        foreach ($currencies as $currency => $accuracy) {
-            if (!in_array($currency, array_keys($rates))) {
-                throw new \Exception('Missing currency rate ' . $currency);
-            }
-        }
-    }
-
-    /**
      * Checks if column count corresponds to requiredh
      *
      * @param $data
@@ -173,7 +157,6 @@ class CsvFileValidator
     {
         return in_array($data, $enum);
     }
-
 
     /**
      * Validates currency
