@@ -2,7 +2,7 @@
 
 namespace spec\Paysera\Entity;
 
-use Paysera\Entity\UsersWithdrawals;
+use Paysera\Entity\ClientsWithdrawals;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,6 +13,6 @@ class ClientsWithdrawalsSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(UsersWithdrawals::class);
+        $this->shouldHaveType(ClientsWithdrawals::class);
     }
 }

@@ -2,14 +2,13 @@
 
 namespace Paysera\Entity;
 
-
 /**
  * Class Money
  * @package Paysera\Entity
  */
 class Money
 {
-    /** @var double */
+    /** @var float */
     private $amount;
 
     /** @var string */
@@ -18,7 +17,7 @@ class Money
     /**
      * Money constructor.
      *
-     * @param double $amount
+     * @param float $amount
      * @param string $currency
      */
     public function __construct($amount, $currency)
@@ -30,7 +29,7 @@ class Money
     /**
      * Getter for amount
      *
-     * @return double
+     * @return float
      */
     public function getAmount()
     {
@@ -52,22 +51,11 @@ class Money
      *
      * @param $foreignCurrency
      * @param $rates
-     * @return double
+     * @return float
      */
     public function amountIn($foreignCurrency, $rates)
     {
         return $this->amount / $rates[$this->currency] * $rates[$foreignCurrency];
-    }
-
-    /**
-     * Returns money multiplicated by given factor
-     *
-     * @param $factor
-     * @return Money
-     */
-    public function multipliedBy($factor)
-    {
-        return new Money($this->amount * $factor, $this->currency);
     }
 
     /**
@@ -93,5 +81,34 @@ class Money
         $accuracy = $currencies[$this->getCurrency()];
 
         return ceil($this->amount / $accuracy) * $accuracy;
+    }
+
+    /**
+     * Deducts given sum in base currency from this. No negative sums.
+     *
+     * @param $sumInBaseCurr
+     * @param array $rates
+     * @return Money
+     */
+    public function deductInBaseCurr($sumInBaseCurr, $rates)
+    {
+        $sum = $sumInBaseCurr * $rates[$this->currency];
+
+        if ($sum >  $this->amount) {
+            return new Money(0, $this->currency);
+        }
+
+        return new Money($this->amount - $sum, $this->currency);
+    }
+
+    /**
+     * Returns money multiplicated by given factor
+     *
+     * @param $factor
+     * @return Money
+     */
+    public function multipliedBy($factor)
+    {
+        return new Money($this->amount * $factor, $this->currency);
     }
 }

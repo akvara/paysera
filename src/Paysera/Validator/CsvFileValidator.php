@@ -2,7 +2,6 @@
 
 namespace Paysera\Validator;
 
-
 use Paysera\Config;
 use Paysera\IO\FileReader;
 

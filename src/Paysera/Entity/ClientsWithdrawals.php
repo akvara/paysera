@@ -2,18 +2,17 @@
 
 namespace Paysera\Entity;
 
-
 /**
- * Class UsersWithdrawals
+ * Class ClientsWithdrawals
  * @package Paysera\Entity
  */
-class UsersWithdrawals
+class ClientsWithdrawals
 {
 	/** @var array */
 	private $usersWithdrawals;
 
     /**
-     * UsersWithdrawals constructor.
+     * ClientsWithdrawals constructor.
      */
     public function __construct()
     {

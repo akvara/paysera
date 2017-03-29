@@ -1,13 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: andrius
  * Date: 17.3.28
  * Time: 04.40
  */
 
 namespace Paysera\IO;
-
 
 use Paysera\Config;
 
@@ -36,5 +34,4 @@ class ConfigLoader
 
         return $config;
     }
-
 }

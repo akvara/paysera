@@ -2,7 +2,6 @@
 
 namespace Paysera\IO;
 
-
 /**
  * Class FileReader
  * @package Paysera\IO

@@ -35,8 +35,8 @@ final class Config
         'IN_RATE',
         'IN_MAX',
         'OUT_RATE_NAT',
-        'OUT_LIMIT_NAT',
-        'OUT_OP_NAT',
+        'OUT_LIMIT_SUM_NAT',
+        'OUT_LIMIT_OP_NAT',
         'OUT_RATE_LEG',
         'OUT_MIN_LEG'
     ];

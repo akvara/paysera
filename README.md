@@ -63,9 +63,10 @@ where optional {data-file-name} is the file you want to process.
  
 ## Running tests
 
-Tests are run by executing command:
+Tests are run by executing commands:
 
     phpspec run
+    ./bin/phpunit
     
 
 

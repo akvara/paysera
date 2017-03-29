@@ -62,13 +62,13 @@ class MoneyTransfer
     }
 
     /**
-     * Calculates commisions
+     * Calculates commissions
      *
      * @param array $tariffs
      * @param array $rates
      * @return int|Money
      */
-    public function commision(array $tariffs, array $rates)
+    public function commission(array $tariffs, array $rates)
     {
         if ($this->direction === Config::ENUMS['Direction']['out']) {
             return $this->calculateDirectionOut($tariffs, $rates);
@@ -77,7 +77,7 @@ class MoneyTransfer
     }
 
     /**
-     * Calculates commisions for inbound money
+     * Calculates commissions for inbound money
      *
      * @param array $tariffs
      * @param array $rates
@@ -85,22 +85,10 @@ class MoneyTransfer
      */
     private function calculateDirectionIn(array $tariffs, array $rates)
     {
-        $upperLimit = new Money($tariffs['IN_MAX'], Config::BASE_CURRENCY);
-
-        $comm = $this->money->multipliedBy($tariffs['IN_RATE'] / 100);
-
-        if ($comm->isMore($upperLimit, $rates)) {
-            return new Money(
-                $upperLimit->amountIn($comm->getCurrency(), $rates),
-                $this->money->getCurrency()
-            );
-        }
-
-        return $comm;
     }
 
     /**
-     * Calculates commisions for outbound money
+     * Calculates commissions for outbound money
      *
      * @param array $tariffs
      * @param array $rates
@@ -112,17 +100,6 @@ class MoneyTransfer
             return $this->calculateDirectionOutForPrivate();
         }
 
-        $lowerLimit = new Money($tariffs['OUT_MIN_LEG'], Config::BASE_CURRENCY);
-        $comm = $this->money->multipliedBy($tariffs['OUT_RATE_LEG'] / 100);
-
-        if ($lowerLimit->isMore($comm, $rates)) {
-            return new Money(
-                $lowerLimit->amountIn($comm->getCurrency(), $rates),
-                $this->money->getCurrency()
-            );
-        }
-
-        return $comm;
     }
 
     /**
