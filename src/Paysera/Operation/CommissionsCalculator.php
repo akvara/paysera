@@ -1,12 +1,12 @@
 <?php
 
-namespace Paysera\Calculator;
+namespace Paysera\Operation;
 use Paysera\Config;
 use Paysera\Entity\Money;
 
 /**
  * Class CommissionsCalculator
- * @package Paysera\Calculator
+ * @package Paysera\Operation
  */
 class CommissionsCalculator
 {

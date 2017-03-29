@@ -42,20 +42,21 @@ class CalcCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        // Reading config files
         $fileName = $input->getArgument('file');
         $currencies = ConfigLoader::loadConfig(Config::CURRENCIES);
         $rates = ConfigLoader::loadConfig(Config::RATES);
         $tariffs = ConfigLoader::loadConfig(Config::TARIFFS);
 
+        // Cheking system integrity
         $systemIntergityCheck = new SystemIntegrityValidator($currencies, $rates);
         $systemIntergityCheck->validate();
 
+        // Checking user file validity
         $userDataCheck = new UserDataValidator($currencies, $fileName);
         $userDataCheck->validate();
 
-        $info = 'Getting data from file ' . $fileName;
-        $output->writeln("<info>{$info}</info>");
-
+        // Processing file
         $reader = new FileReader($fileName);
         $handle = $reader->getHandle();
         while (($data = fgetcsv($handle, 0, ",")) !== FALSE) {
@@ -64,8 +65,10 @@ class CalcCommand extends Command
             $clientType = $data[2];
             $opType = $data[3];
             $money = new Money(floatval($data[4]),$data[5]);
+            
         }
-         $reader->close();
+
+        $reader->close();
 
         return 0;
     }

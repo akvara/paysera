@@ -42,19 +42,24 @@ class CheckCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        // Loading configs
         $currencies = ConfigLoader::loadConfig(Config::CURRENCIES);
         $rates = ConfigLoader::loadConfig(Config::RATES);
+
+        // Starting communication
+        $info = 'Checking system integrity';
+        $output->writeln("<info>{$info}</info>");
 
         $systemIntergityCheck = new SystemIntegrityValidator($currencies, $rates);
         $systemIntergityCheck->validate();
 
-        $output->writeln("<info>Config files are correct</info>");
+        $output->writeln("<info>Config files are correct.</info>");
 
         if ($userFile = $input->getArgument('file')) {
             $userDataCheck = new UserDataValidator($currencies, $userFile);
             $userDataCheck->validate();
 
-            $output->writeln("<info>User supplied file " . $userFile. " is correct</info>");
+            $output->writeln("<info>User supplied file " . $userFile. " is correct.</info>");
         }
 
         return 0;

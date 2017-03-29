@@ -1,14 +1,14 @@
 <?php
 
-namespace spec\Paysera\Calculator;
+namespace spec\Paysera\Operation;
 
-use Paysera\Calculator\CommissionsCalculator;
+use Paysera\Operation\CommissionsCalculator;
 use Paysera\Entity\Money;
 use PhpSpec\ObjectBehavior;
 
 /**
  * Class commissionsCalculatorSpec
- * @package spec\Paysera\Calculator
+ * @package spec\Paysera\Operation
  */
 class CommissionsCalculatorSpec extends ObjectBehavior
 {
