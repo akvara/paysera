@@ -66,30 +66,4 @@ where optional {data-file-name} is the file you want to process.
 Tests are run by executing commands:
 
      vendor/bin/phpspec run 
-    
-    
-=====
-
-Trumpai apie sistemą:
-
-Sistema paleidžiama bin/ direktorijoje esančiu vykdomuoju failu ./bin/paysera.
-
-Šiuo metu realizuotos komandos:
-- paysera check [failas] - sistemos integralumo ir vartotojo failo atitikimo specifikacijai patikrinimui
-- paysera calc _failas_ - komisinių skaičiavimams atlikti
-
-Sistema naudoja konfiguracinius failus csv formatu:
-
-- palaikomos valiutos ir jų apvalinimo tikslumai nurodyti faile supported_currencies.csv,
-- valiutų kursai saugomi faile currency_rates.csv,
-- šiuo metu naudojami komisinių skaičiavimo tarifai, minimalios komisinių sumos ir nemokamų operacijų limitai saugomi faile tariffs.csv
-
-Sistema tikrina, ar visoms palaikomoms valiutoms yra nurodyti jų kursai.
-
-Duomenų failų, datos formatai ir dalis kitos verslo logikos gali būti konfigūruojama faile Config.php.
-
-Prieš pradėdama skaičiavimus sistema patikrina konfigūracinių failų ir vartotojo failo korektiškumą.
-
-Testams naudojama PHPSpec.
-
-Detalesnis diegimo ir naudojimo aprašymas yra faile README.md.
+     ./bin/phpunit
