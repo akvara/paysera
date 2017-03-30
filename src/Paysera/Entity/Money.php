@@ -71,22 +71,6 @@ class Money
     }
 
     /**
-     * Rounds according to The Rules
-     *
-     * @param $currencies
-     * @return float
-     */
-    public function roundedPrint($currencies)
-    {
-        $accuracy = $currencies[$this->getCurrency()];
-        $value = ceil($this->amount / $accuracy) * $accuracy;
-
-        if($accuracy >= 1) return sprintf("%01d", $value);
-
-        return sprintf("%01.2f", $value);
-    }
-
-    /**
      * Deducts given sum in base currency from this. No negative sums.
      *
      * @param $sumInBaseCurr

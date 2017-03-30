@@ -22,8 +22,6 @@ class MoneySpec extends ObjectBehavior
         'ANO' => 0.5
     ];
 
-//    const TEST_BASE_CURRENCY = "EUR";
-
     function it_is_initializable()
     {
         $this->beConstructedWith(5.23, 'EUR');
@@ -53,18 +51,6 @@ class MoneySpec extends ObjectBehavior
         $comparedTo = new Money(4, 'FOR');
         $this->beConstructedWith(8, 'EUR');
         $this->isMore($comparedTo, self::TEST_RATES)->shouldBe(true);
-    }
-
-    function it_can_round_itself_up_with_cents()
-    {
-        $this->beConstructedWith(4.023, 'EUR');
-        $this->roundedPrint(self::TEST_CURRENCIES)->shouldBe("4.03");
-    }
-
-    function it_can_round_itself_up_without_cents()
-    {
-        $this->beConstructedWith(4.023, 'FOR');
-        $this->roundedPrint(self::TEST_CURRENCIES)->shouldBe("5");
     }
 
     function it_can_deduct_sum_in_other_currency()
