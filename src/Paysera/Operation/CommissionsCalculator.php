@@ -1,6 +1,7 @@
 <?php
 
 namespace Paysera\Operation;
+
 use Paysera\Config;
 use Paysera\Entity\Money;
 
@@ -20,15 +21,14 @@ class CommissionsCalculator
      */
     static public function commissionsCashInPrivate(Money $money, array $tariffs, array $rates)
     {
+        $converter = new Converter($rates);
+
         $upperLimit = new Money($tariffs['IN_MAX'], Config::BASE_CURRENCY);
 
-        $comm = $money->multipliedBy($tariffs['IN_RATE'] / 100);
+        $comm = $converter->multipliedBy($money, $tariffs['IN_RATE'] / 100);
 
-        if ($comm->isMore($upperLimit, $rates)) {
-            return new Money(
-                $upperLimit->amountIn($comm->getCurrency(), $rates),
-                $money->getCurrency()
-            );
+        if ($converter->compare($comm, $upperLimit) === 1) {
+            $comm = $converter->convert($upperLimit, $money->getCurrency());
         }
 
         return $comm;
@@ -51,15 +51,21 @@ class CommissionsCalculator
         array $tariffs,
         array $rates
     ) {
+        $converter = new Converter($rates);
+
         if ($countOfWithdrThisWeek > $tariffs['OUT_LIMIT_OP_NAT']) {
-            return $money->multipliedBy($tariffs['OUT_RATE_NAT'] / 100);
+            return $converter->multipliedBy($money, $tariffs['OUT_RATE_NAT'] / 100);
         }
 
         $taxable = $money;
-        $commissionFreeSumInBaseCurr = $tariffs['OUT_LIMIT_SUM_NAT'] - $sumOfWithdrThisWeek;
+        $commissionFree = $converter->subtract(
+            new Money($tariffs['OUT_LIMIT_SUM_NAT'], Config::BASE_CURRENCY),
+            new Money($sumOfWithdrThisWeek, Config::BASE_CURRENCY)
+        );
 
-        if ($commissionFreeSumInBaseCurr > 0) {
-            $taxable = $money->deductInBaseCurr($commissionFreeSumInBaseCurr, $rates);
+        if ($commissionFree->getAmount() > 0) {
+            $taxable = $converter->subtract($money, $commissionFree);
+            if ($taxable->getAmount() < 0) $taxable = new Money(0, $money->getCurrency());
         }
 
         return new Money($taxable->getAmount() * $tariffs['OUT_RATE_NAT'] / 100, $money->getCurrency());
@@ -89,13 +95,13 @@ class CommissionsCalculator
     static public function commissionsCashOutCompany(Money $money, array $tariffs, array $rates)
     {
         $lowerLimit = new Money($tariffs['OUT_MIN_LEG'], Config::BASE_CURRENCY);
-        $comm = $money->multipliedBy($tariffs['OUT_RATE_LEG'] / 100);
 
-        if ($lowerLimit->isMore($comm, $rates)) {
-            return new Money(
-                $lowerLimit->amountIn($comm->getCurrency(), $rates),
-                $money->getCurrency()
-            );
+        $converter = new Converter($rates);
+
+        $comm = $converter->multipliedBy($money, $tariffs['OUT_RATE_LEG'] / 100);
+
+        if ($converter->compare($lowerLimit, $comm) === 1) {
+            return $converter->convert($lowerLimit, $money->getCurrency());
         }
 
         return $comm;

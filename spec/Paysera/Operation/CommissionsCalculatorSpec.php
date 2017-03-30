@@ -4,6 +4,7 @@ namespace spec\Paysera\Operation;
 
 use Paysera\Operation\CommissionsCalculator;
 use Paysera\Entity\Money;
+use Paysera\Operation\Converter;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -49,6 +50,7 @@ class CommissionsCalculatorSpec extends ObjectBehavior
 
     function it_should_not_exceed_max_in_commission_for_private()
     {
+        $converter = new Converter(self::TEST_RATES);
         $max = new Money(self::TEST_TARIFFS['IN_MAX'], self::TEST_BASE_CURRENCY);
 
         $this
@@ -58,7 +60,7 @@ class CommissionsCalculatorSpec extends ObjectBehavior
                 self::TEST_RATES
             )
             ->getAmount()
-            ->shouldBe($max->amountIn('FOR', self::TEST_RATES));
+            ->shouldBe($converter->convert($max, 'FOR')->getAmount());
     }
 
     // *** Private - Out ***
@@ -93,11 +95,12 @@ class CommissionsCalculatorSpec extends ObjectBehavior
 
     function it_should_respect_allowed_free_limit_per_week_for_private()
     {
+        $converter = new Converter(self::TEST_RATES);
         $limit = new Money(self::TEST_TARIFFS['OUT_LIMIT_SUM_NAT'], self::TEST_BASE_CURRENCY);
 
         $takingOut = new Money(5000, 'FOR');
 
-        $expectingToPayCommFrom = $takingOut->getAmount() - $limit->amountIn('FOR', self::TEST_RATES);
+        $expectingToPayCommFrom = $takingOut->getAmount() - $converter->convert($limit, 'FOR')->getAmount();
 
         $this
             ->commissionsCashOutPrivate(
@@ -108,11 +111,12 @@ class CommissionsCalculatorSpec extends ObjectBehavior
                 self::TEST_RATES
             )
             ->getAmount()
-            ->shouldBe($expectingToPayCommFrom * self::TEST_TARIFFS['OUT_RATE_NAT'] / 100);
+            ->shouldBe($expectingToPayCommFrom->getAmount() * self::TEST_TARIFFS['OUT_RATE_NAT'] / 100);
     }
 
     function it_should_deduct_used_limit_of_per_week_for_private()
     {
+        $converter = new Converter(self::TEST_RATES);
         $limit = new Money(self::TEST_TARIFFS['OUT_LIMIT_SUM_NAT'], self::TEST_BASE_CURRENCY);
         $used = new Money(500, self::TEST_BASE_CURRENCY);
 
@@ -120,8 +124,8 @@ class CommissionsCalculatorSpec extends ObjectBehavior
 
         $expectingToPayCommFrom =
             $takingOut->getAmount()
-            - $limit->amountIn('FOR', self::TEST_RATES)
-            + $used->amountIn('FOR', self::TEST_RATES);
+            - $converter->convert($limit, 'FOR')->getAmount()
+            + $converter->convert($used, 'FOR')->getAmount();
 
         $this
             ->commissionsCashOutPrivate(
@@ -151,6 +155,7 @@ class CommissionsCalculatorSpec extends ObjectBehavior
 
     function it_should_not_exceed_max_cash_in_commission_for_company()
     {
+        $converter = new Converter(self::TEST_RATES);
         $max = new Money(self::TEST_TARIFFS['IN_MAX'], self::TEST_BASE_CURRENCY);
 
         $this
@@ -160,7 +165,7 @@ class CommissionsCalculatorSpec extends ObjectBehavior
                 self::TEST_RATES
             )
             ->getAmount()
-            ->shouldBe($max->amountIn('FOR', self::TEST_RATES));
+            ->shouldBe($converter->convert($max, 'FOR')->getAmount());
     }
 
     // *** Company - Out ***
@@ -179,6 +184,7 @@ class CommissionsCalculatorSpec extends ObjectBehavior
 
     function it_should_not_be_less_than_min_cash_out_for_companies()
     {
+        $converter = new Converter(self::TEST_RATES);
         $min = new Money(self::TEST_TARIFFS['OUT_MIN_LEG'], self::TEST_BASE_CURRENCY);
 
         $this
@@ -188,6 +194,6 @@ class CommissionsCalculatorSpec extends ObjectBehavior
                 self::TEST_RATES
             )
             ->getAmount()
-            ->shouldBe($min->amountIn('FOR', self::TEST_RATES));
+            ->shouldBe($converter->convert($min, 'FOR')->getAmount());
     }
 }
